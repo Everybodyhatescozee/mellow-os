@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('./fonts/SF-Pro-Display-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root{
+  --bg: #0A0A0A;
+  --off: #F5F5F2;
+  --muted-purple: #5C4B8A;
+  --soft-green: #00B894;
+}
+
+html,body,#root{
+  height:100%;
+}
+
+body{
+  @apply bg-[var(--bg)] text-[var(--off)];
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+
+/* Headings use SF Pro Display */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Cursor ripple */
+.cursor-ripple{
+  position: fixed;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Blinking cursor */
+.cursor-blink::after{
+  content: '';
+  display:inline-block;
+  width:10px;
+  height:18px;
+  background:var(--off);
+  margin-left:6px;
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink{50%{opacity:0}}
+
+/* Boot sequence text */
+.boot-screen{
+  background:var(--bg);
+  color:var(--off);
+}
+
+/* Glass panel */
+.panel-glass{
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(92,75,138,0.5);
+  color: #F5F5F2;
+}
