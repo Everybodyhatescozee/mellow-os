@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* SF Pro Display font - optional, falls back to system fonts */
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('./fonts/SF-Pro-Display-Regular.woff2') format('woff2');
+  src: local('SF Pro Display'), local('-apple-system'), local('BlinkMacSystemFont');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
