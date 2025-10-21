@@ -2,9 +2,12 @@ import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const BOOT_LINES = [
-  'initializing mellow protocol...',
-  'calibrating consciousness...',
-  'welcome to Mellow OS_'
+    "> initializing System protocol...",
+    "> loading neural modules...",
+    "> calibrating creative systems...",
+    "> syncing temporal awareness...",
+    "> establishing neural pathways...",
+    "> welcome to Mellow OS_"
 ]
 
 export default function BootSequence({ onFinish }){
