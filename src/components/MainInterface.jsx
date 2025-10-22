@@ -16,6 +16,13 @@ const PROJECTS = [
     github: "https://github.com/Everybodyhatescozee/Naheedv2",
     live: "https://naheedmap.vercel.app",
     image: "/marauders-memory-map.png"
+  },
+  {
+    title: "Shepherd Studios",
+    description: "Faith-driven motion design studio website with animated brand identity",
+    tech: ["Next.js", "React", "TypeScript", "Framer Motion", "Tailwind CSS v4", "shadcn/ui"],
+    github: "https://github.com/Everybodyhatescozee/shepherd-studios",
+    live: "https://shepherd-studios.vercel.app"
   }
 ]
 
