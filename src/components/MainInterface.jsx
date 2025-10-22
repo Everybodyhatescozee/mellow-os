@@ -56,11 +56,12 @@ export default function MainInterface(){
       </div>
 
       {mode === 'flow' ? (
-        // Flow mode - Just neural network with centered title
+        // Flow mode - Just neural network with fading title
         <div className="max-w-7xl mx-auto py-16 px-4 md:px-8 relative z-10 min-h-screen flex flex-col items-center justify-center">
           <motion.div
             initial={{opacity:0, scale:0.9}}
             animate={{opacity:1, scale:1}}
+            exit={{opacity:0, scale:0.9}}
             transition={{duration:1.2, ease: [0.22, 1, 0.36, 1]}}
             className="text-center"
           >
@@ -69,30 +70,32 @@ export default function MainInterface(){
               style={{
                 textShadow: '0 0 60px rgba(92,75,138,0.6), 0 0 120px rgba(0,184,148,0.3)'
               }}
+              initial={{opacity:1}}
               animate={{
+                opacity: [1, 1, 0],
                 textShadow: [
                   '0 0 60px rgba(92,75,138,0.6), 0 0 120px rgba(0,184,148,0.3)',
                   '0 0 80px rgba(92,75,138,0.8), 0 0 160px rgba(0,184,148,0.4)',
                   '0 0 60px rgba(92,75,138,0.6), 0 0 120px rgba(0,184,148,0.3)'
                 ]
               }}
-              transition={{duration: 3, repeat: Infinity, ease: "easeInOut"}}
+              transition={{duration: 4, ease: "easeInOut"}}
             >
               Mellow OS
             </motion.h1>
             <motion.p 
               className="text-lg text-gray-400 font-mono tracking-wide"
               initial={{opacity:0}}
-              animate={{opacity:1}}
-              transition={{delay:0.5, duration:0.8}}
+              animate={{opacity: [0, 1, 1, 0]}}
+              transition={{duration: 4, times: [0, 0.2, 0.7, 1]}}
             >
               Percy Mawela — 22 — creative technologist & designer
             </motion.p>
             <motion.p
               className="mt-6 text-sm text-mellowGreen/80 font-mono"
               initial={{opacity:0}}
-              animate={{opacity:1}}
-              transition={{delay:0.8, duration:0.8}}
+              animate={{opacity: [0, 1, 1, 0]}}
+              transition={{duration: 4, times: [0, 0.3, 0.7, 1]}}
             >
               Neural network of skills & expertise
             </motion.p>
