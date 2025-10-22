@@ -5,6 +5,19 @@ import ModeToggle from './ModeToggle'
 import CursorTrail from './CursorTrail'
 import TerminalBackground from './TerminalBackground'
 import NeuralNetwork from './NeuralNetwork'
+import ProjectCard from './ProjectCard'
+
+const PROJECTS = [
+  {
+    title: "Marauders' Memory Map",
+    description: "Interactive memory mapping application with real-time data synchronization",
+    fullDescription: "A modern full-stack memory mapping application showcasing advanced React and Next.js capabilities. Built with Next.js 16, React 19, and Supabase for real-time data management. Features include an intuitive interface for creating and organizing memories, dark mode support, responsive design optimized for all devices, and type-safe TypeScript implementation. Leverages cutting-edge technologies including Turbopack for performance optimization and shadcn/ui for a polished component library. The project demonstrates expertise in modern web development, real-time database management, and creating seamless user experiences.",
+    tech: ["Next.js 16", "React 19", "TypeScript", "Supabase", "Tailwind CSS v4", "shadcn/ui", "Vercel"],
+    github: "https://github.com/Everybodyhatescozee/Naheedv2",
+    live: "https://naheedmap.vercel.app",
+    image: "/marauders-memory-map.png"
+  }
+]
 
 export default function MainInterface(){
   const [mode, setMode] = useState(() => localStorage.getItem('mellow_mode') || 'flow')
@@ -116,9 +129,9 @@ export default function MainInterface(){
 
           <Tile title="Projects" index={1} mode={mode}>
             <div className="p-4 space-y-3">
-              <Card title="Cognitive Design Systems" mode={mode}/>
-              <Card title="Tutor Companion App" mode={mode}/>
-              <Card title="Motion Experiments" mode={mode}/>
+              {PROJECTS.map((project, i) => (
+                <ProjectCard key={i} project={project} mode={mode}/>
+              ))}
             </div>
           </Tile>
 
@@ -131,46 +144,6 @@ export default function MainInterface(){
       </div>
       )}
     </div>
-  )
-}
-
-function Card({title, mode}){
-  return (
-    <motion.div 
-      whileHover={{
-        y:-8, 
-        scale:1.03,
-        rotateX: 2,
-        rotateY: -2
-      }} 
-      className="relative p-5 rounded-xl cursor-pointer overflow-hidden group"
-      style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))',
-        border: '1px solid rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(10px)',
-        transformStyle: 'preserve-3d',
-        perspective: '1000px'
-      }}
-      transition={{type: 'spring', stiffness: 300, damping: 20}}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-mellowPurple/20 via-transparent to-mellowGreen/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="relative z-10">
-        <h4 className="font-heading text-base font-semibold mb-2 tracking-wide">{title}</h4>
-        <p className="text-xs text-gray-400 leading-relaxed">Placeholder description. Click to view details.</p>
-      </div>
-      <motion.div 
-        className="absolute -bottom-10 -right-10 w-32 h-32 bg-mellowPurple/20 rounded-full blur-2xl"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-    </motion.div>
   )
 }
 
