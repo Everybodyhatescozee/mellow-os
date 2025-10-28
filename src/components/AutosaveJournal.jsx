@@ -95,20 +95,20 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
   const recentFocusSessions = sessions.filter(s => s.type === 'Focus').slice(0, 5)
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-y-auto">
       {!zenMode ? (
         <>
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4 md:mb-6 flex-wrap gap-2">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-              <h3 className="text-lg font-mono font-bold text-mellowOff">Autosave Journal</h3>
+              <h3 className="text-base md:text-lg font-mono font-bold text-mellowOff">Journal</h3>
             </div>
             
             <div className="flex gap-2">
               <motion.button
                 onClick={() => setZenMode(true)}
-                className="px-3 py-1.5 rounded-lg bg-black/40 border border-gray-800 text-gray-400 font-mono text-xs hover:border-gray-700 hover:text-mellowOff transition-all"
+                className="px-2.5 md:px-3 py-1.5 rounded-lg bg-black/40 border border-gray-800 text-gray-400 font-mono text-xs hover:border-gray-700 hover:text-mellowOff transition-all touch-manipulation"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 title="Zen Mode"
@@ -119,7 +119,7 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
               {sessions.length > 0 && (
                 <motion.button
                   onClick={exportToMarkdown}
-                  className="px-3 py-1.5 rounded-lg bg-black/40 border border-gray-800 text-gray-400 font-mono text-xs hover:border-gray-700 hover:text-mellowOff transition-all"
+                  className="px-2.5 md:px-3 py-1.5 rounded-lg bg-black/40 border border-gray-800 text-gray-400 font-mono text-xs hover:border-gray-700 hover:text-mellowOff transition-all touch-manipulation"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   title="Export to Markdown"
@@ -131,12 +131,12 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
           </div>
 
           {/* Tag Selector */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex gap-2 mb-3 md:mb-4 overflow-x-auto pb-2 -mx-1 px-1">
             {TAGS.map(tag => (
               <motion.button
                 key={tag.id}
                 onClick={() => setSelectedTag(tag)}
-                className={`px-3 py-2 rounded-lg border transition-all ${
+                className={`px-2.5 md:px-3 py-1.5 md:py-2 rounded-lg border transition-all whitespace-nowrap touch-manipulation ${
                   selectedTag.id === tag.id
                     ? `bg-gradient-to-r ${tag.color} bg-opacity-10 border-opacity-40`
                     : 'bg-black/20 border-gray-800 hover:border-gray-700'
@@ -158,22 +158,22 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="mb-4"
+              className="mb-3 md:mb-4"
             >
               <label className="text-xs font-mono text-gray-400 mb-2 block">
                 Link to a focus session (optional)
               </label>
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
                 {recentFocusSessions.map((session, idx) => (
                   <motion.button
                     key={idx}
                     onClick={() => setFocusLink(session.goal)}
-                    className="px-3 py-2 rounded-lg bg-black/40 border border-gray-800 hover:border-cyan-400 transition-all whitespace-nowrap"
+                    className="px-2.5 md:px-3 py-1.5 md:py-2 rounded-lg bg-black/40 border border-gray-800 hover:border-cyan-400 transition-all whitespace-nowrap touch-manipulation"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <span className="text-xs font-mono text-gray-400">
-                      🎯 {session.goal?.substring(0, 30)}...
+                      🎯 {session.goal?.substring(0, 25)}...
                     </span>
                   </motion.button>
                 ))}
@@ -185,15 +185,15 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/30"
+              className="mb-3 md:mb-4 p-2.5 md:p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/30"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-cyan-400">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-mono text-cyan-400 line-clamp-1">
                   🔗 Linked to: {focusLink}
                 </span>
                 <button
                   onClick={() => setFocusLink(null)}
-                  className="text-gray-500 hover:text-mellowOff"
+                  className="text-gray-500 hover:text-mellowOff text-lg touch-manipulation flex-shrink-0"
                 >
                   ×
                 </button>
@@ -202,13 +202,13 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
           )}
 
           {/* Text Area */}
-          <div className="relative mb-4">
+          <div className="relative mb-3 md:mb-4 flex-1 min-h-0">
             <textarea
               ref={textareaRef}
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Start typing... Auto-saves every 3 seconds. Let your thoughts flow freely."
-              className="w-full h-32 px-4 py-3 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-sm placeholder-gray-600 focus:border-purple-400 focus:outline-none transition-colors resize-none"
+              placeholder="Start typing... Auto-saves every 3 seconds."
+              className="w-full h-full min-h-[100px] px-3 md:px-4 py-2.5 md:py-3 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-sm placeholder-gray-600 focus:border-purple-400 focus:outline-none transition-colors resize-none touch-manipulation"
             />
             
             {lastSaved && (
@@ -229,7 +229,7 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               onClick={handleManualSave}
-              className="w-full py-3 rounded-xl mb-4 font-mono text-sm font-bold bg-gradient-to-r from-purple-400 to-pink-400 text-mellowBlack hover:shadow-lg hover:shadow-purple-400/30 transition-all"
+              className="w-full py-2.5 md:py-3 rounded-lg md:rounded-xl mb-3 md:mb-4 font-mono text-sm font-bold bg-gradient-to-r from-purple-400 to-pink-400 text-mellowBlack hover:shadow-lg hover:shadow-purple-400/30 transition-all touch-manipulation"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -239,13 +239,13 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
 
           {/* Search */}
           {sessions.length > 0 && (
-            <div className="mb-4">
+            <div className="mb-3 md:mb-4">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="🔍 Search entries..."
-                className="w-full px-4 py-2 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-xs placeholder-gray-600 focus:border-purple-400 focus:outline-none transition-colors"
+                className="w-full px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-xs md:text-sm placeholder-gray-600 focus:border-purple-400 focus:outline-none transition-colors touch-manipulation"
               />
             </div>
           )}
@@ -257,7 +257,7 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
                 <SessionCard key={index} session={session} />
               ))
             ) : (
-              <div className="text-center py-8 text-gray-600 font-mono text-sm">
+              <div className="text-center py-8 text-gray-600 font-mono text-xs md:text-sm">
                 {searchQuery ? 'No matching entries' : 'No entries yet. Start writing...'}
               </div>
             )}
@@ -268,16 +268,16 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex-1 flex flex-col bg-mellowBlack/95 -m-6 p-6 rounded-2xl"
+          className="flex-1 flex flex-col bg-mellowBlack/95 -m-4 md:-m-6 p-4 md:p-6 rounded-xl md:rounded-2xl overflow-y-auto"
         >
           {/* Minimal Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="text-xs font-mono text-gray-600">
+          <div className="flex items-center justify-between mb-6 md:mb-8 flex-shrink-0">
+            <div className="text-[10px] md:text-xs font-mono text-gray-600">
               {selectedTag.icon} {selectedTag.label}
             </div>
             <motion.button
               onClick={() => setZenMode(false)}
-              className="text-gray-600 hover:text-mellowOff font-mono text-xs transition-colors"
+              className="text-gray-600 hover:text-mellowOff font-mono text-[10px] md:text-xs transition-colors touch-manipulation px-2 py-1"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -290,8 +290,7 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Breathe. Think. Write..."
-            className="flex-1 w-full px-0 py-0 bg-transparent border-none text-mellowOff font-mono text-base placeholder-gray-700 focus:outline-none resize-none leading-relaxed"
-            autoFocus
+            className="flex-1 w-full px-0 py-0 bg-transparent border-none text-mellowOff font-mono text-sm md:text-base placeholder-gray-700 focus:outline-none resize-none leading-relaxed"
           />
 
           {/* Zen Status */}
@@ -299,7 +298,7 @@ export default function AutosaveJournal({ sessions, onAddSession }) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 text-xs font-mono text-gray-600 text-center"
+              className="mt-4 text-[10px] md:text-xs font-mono text-gray-600 text-center flex-shrink-0"
             >
               {content.trim().split(/\s+/).length} words • Auto-saving...
             </motion.div>

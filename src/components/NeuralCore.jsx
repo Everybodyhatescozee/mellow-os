@@ -13,7 +13,6 @@ export default function NeuralCore({ mode }) {
     return sessionStorage.getItem('neural_core_boot_completed') === 'true'
   })
   const [sessions, setSessions] = useState([])
-  const [ambientEnabled, setAmbientEnabled] = useState(false)
 
   // Load sessions from LocalStorage
   useEffect(() => {
@@ -103,35 +102,8 @@ export default function NeuralCore({ mode }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="h-full flex flex-col gap-6"
+            className="h-full flex flex-col gap-4 md:gap-6"
           >
-            {/* Header with Ambient Sound Toggle */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0"
-            >
-              <div>
-                <h2 className="text-xl sm:text-2xl font-mono font-bold text-mellowOff mb-1">
-                  Neural Core
-                </h2>
-                <p className="text-xs font-mono text-gray-500">
-                  Cognitive sandbox for deep focus and self-reflection
-                </p>
-              </div>
-              <button
-                onClick={() => setAmbientEnabled(!ambientEnabled)}
-                className={`px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl font-mono text-xs font-semibold transition-all whitespace-nowrap ${
-                  ambientEnabled
-                    ? 'bg-cyan-400/20 text-cyan-400 border border-cyan-400/50'
-                    : 'bg-gray-800/50 text-gray-500 border border-gray-700/50 hover:border-gray-600'
-                }`}
-              >
-                {ambientEnabled ? '🔊 Ambient On' : '🔇 Ambient Off'}
-              </button>
-            </motion.div>
-
             {/* Top panels - Focus Trainer and Journal */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 flex-1 min-h-0">
               {/* Left: Photographic Recall 2.0 */}
@@ -163,7 +135,6 @@ export default function NeuralCore({ mode }) {
                 <div className="relative z-10 h-full">
                   <FocusTrainer 
                     onSessionComplete={addSession}
-                    ambientEnabled={ambientEnabled}
                   />
                 </div>
               </motion.div>

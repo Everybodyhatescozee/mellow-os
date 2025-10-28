@@ -16,7 +16,7 @@ const EMOTIONS = [
   { emoji: '💡', label: 'Insightful' }
 ]
 
-export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
+export default function FocusTrainer({ onSessionComplete }) {
   const [phase, setPhase] = useState('setup') // setup, active, recall
   const [selectedMode, setSelectedMode] = useState(SESSION_MODES[0])
   const [customDuration, setCustomDuration] = useState(25)
@@ -101,7 +101,7 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
     : ((selectedMode.duration * 60 - timeLeft) / (selectedMode.duration * 60)) * 100
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-y-auto">
       <AnimatePresence mode="wait">
         {phase === 'setup' && (
           <motion.div
@@ -111,18 +111,18 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
             exit={{ opacity: 0, y: -20 }}
             className="flex-1 flex flex-col"
           >
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-4 md:mb-6">
               <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              <h3 className="text-lg font-mono font-bold text-mellowOff">Focus Trainer</h3>
+              <h3 className="text-base md:text-lg font-mono font-bold text-mellowOff">Focus Trainer</h3>
             </div>
 
             {/* Session Mode Selection */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4 md:mb-6">
               {SESSION_MODES.map(mode => (
                 <motion.button
                   key={mode.id}
                   onClick={() => setSelectedMode(mode)}
-                  className={`p-4 rounded-xl border transition-all ${
+                  className={`p-2.5 md:p-4 rounded-lg md:rounded-xl border transition-all touch-manipulation ${
                     selectedMode.id === mode.id
                       ? 'bg-cyan-400/10 border-cyan-400/40'
                       : 'bg-black/20 border-gray-800 hover:border-gray-700'
@@ -130,10 +130,10 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="text-sm font-mono font-bold text-mellowOff mb-1">
+                  <div className="text-xs md:text-sm font-mono font-bold text-mellowOff mb-0.5 md:mb-1">
                     {mode.name}
                   </div>
-                  <div className="text-xs text-gray-500">{mode.description}</div>
+                  <div className="text-[10px] md:text-xs text-gray-500">{mode.description}</div>
                 </motion.button>
               ))}
             </div>
@@ -144,7 +144,7 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mb-6"
+                className="mb-4 md:mb-6"
               >
                 <label className="text-xs font-mono text-gray-400 mb-2 block">
                   Custom Duration: {customDuration} minutes
@@ -156,13 +156,13 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
                   step="5"
                   value={customDuration}
                   onChange={(e) => setCustomDuration(parseInt(e.target.value))}
-                  className="w-full"
+                  className="w-full touch-manipulation"
                 />
               </motion.div>
             )}
 
             {/* Focus Goal Input */}
-            <div className="mb-6">
+            <div className="mb-4 md:mb-6">
               <label className="text-xs font-mono text-gray-400 mb-2 block">
                 What's your focus goal?
               </label>
@@ -170,9 +170,8 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
                 type="text"
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                placeholder="e.g., Study React hooks, Design portfolio UI..."
-                className="w-full px-4 py-3 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-sm placeholder-gray-600 focus:border-cyan-400 focus:outline-none transition-colors"
-                autoFocus
+                placeholder="e.g., Study React hooks..."
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-sm placeholder-gray-600 focus:border-cyan-400 focus:outline-none transition-colors touch-manipulation"
               />
             </div>
 
@@ -180,7 +179,7 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
             <motion.button
               onClick={startSession}
               disabled={!goal.trim()}
-              className={`w-full py-4 rounded-xl font-mono text-sm font-bold transition-all ${
+              className={`w-full py-3 md:py-4 rounded-lg md:rounded-xl font-mono text-sm font-bold transition-all touch-manipulation ${
                 goal.trim()
                   ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-mellowBlack hover:shadow-lg hover:shadow-cyan-400/30'
                   : 'bg-gray-800/50 text-gray-600 cursor-not-allowed'
@@ -199,11 +198,11 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="flex-1 flex flex-col items-center justify-center relative"
+            className="flex-1 flex flex-col items-center justify-center relative px-4"
           >
             {/* Breathing Background */}
             <motion.div
-              className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/5 to-green-400/5"
+              className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-br from-cyan-400/5 to-green-400/5"
               animate={{
                 opacity: [0.3, 0.6, 0.3],
                 scale: [0.98, 1.02, 0.98]
@@ -227,12 +226,12 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
                 ease: 'easeInOut'
               }}
             >
-              <div className="text-6xl md:text-8xl font-mono font-bold text-cyan-400 mb-4">
+              <div className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-mono font-bold text-cyan-400 mb-3 md:mb-4">
                 {formatTime(timeLeft)}
               </div>
               
               {/* Progress Ring */}
-              <svg className="w-40 h-40 mx-auto mb-6" viewBox="0 0 120 120">
+              <svg className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto mb-4 md:mb-6" viewBox="0 0 120 120">
                 <circle
                   cx="60"
                   cy="60"
@@ -264,19 +263,8 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
                 </defs>
               </svg>
 
-              <div className="text-sm font-mono text-gray-400 mb-2">Focusing on:</div>
-              <div className="text-lg font-mono text-mellowOff mb-8">{goal}</div>
-
-              {ambientEnabled && (
-                <motion.div
-                  className="flex items-center gap-2 justify-center text-xs text-cyan-400/60 font-mono"
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <span>🎧</span>
-                  <span>Ambient sounds active</span>
-                </motion.div>
-              )}
+              <div className="text-xs md:text-sm font-mono text-gray-400 mb-1 md:mb-2">Focusing on:</div>
+              <div className="text-sm md:text-base lg:text-lg font-mono text-mellowOff mb-6 md:mb-8 line-clamp-2">{goal}</div>
             </motion.div>
 
             {/* End Session Button */}
@@ -337,15 +325,14 @@ export default function FocusTrainer({ onSessionComplete, ambientEnabled }) {
             <textarea
               value={recallText}
               onChange={(e) => setRecallText(e.target.value)}
-              placeholder="Describe what you accomplished, insights you gained, or progress you made..."
-              className="flex-1 px-4 py-3 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-sm placeholder-gray-600 focus:border-green-400 focus:outline-none transition-colors resize-none mb-4"
-              autoFocus
+              placeholder="Describe what you accomplished..."
+              className="flex-1 min-h-[120px] px-3 md:px-4 py-2.5 md:py-3 rounded-lg bg-black/40 border border-gray-800 text-mellowOff font-mono text-sm placeholder-gray-600 focus:border-green-400 focus:outline-none transition-colors resize-none mb-3 md:mb-4 touch-manipulation"
             />
 
             {/* Complete Button */}
             <motion.button
               onClick={completeSession}
-              className="w-full py-4 rounded-xl font-mono text-sm font-bold bg-gradient-to-r from-green-400 to-cyan-400 text-mellowBlack hover:shadow-lg hover:shadow-green-400/30 transition-all"
+              className="w-full py-3 md:py-4 rounded-lg md:rounded-xl font-mono text-sm font-bold bg-gradient-to-r from-green-400 to-cyan-400 text-mellowBlack hover:shadow-lg hover:shadow-green-400/30 transition-all touch-manipulation"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

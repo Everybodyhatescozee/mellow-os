@@ -132,7 +132,7 @@ export default function CognitiveConsole({ sessions }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.6 }}
-      className="relative p-6 rounded-2xl overflow-hidden"
+      className="relative p-4 md:p-6 rounded-xl md:rounded-2xl overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
         border: '1px solid rgba(255,255,255,0.05)',
@@ -153,7 +153,7 @@ export default function CognitiveConsole({ sessions }) {
 
       <div className="relative z-10">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-3 md:mb-4">
           <motion.div
             className="w-2 h-2 rounded-full bg-green-400"
             animate={{
@@ -165,11 +165,11 @@ export default function CognitiveConsole({ sessions }) {
               repeat: Infinity
             }}
           />
-          <div className="text-xs font-mono text-gray-400">$ neural-core --status</div>
+          <div className="text-[10px] md:text-xs font-mono text-gray-400">$ neural-core --status</div>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
           <StatCard
             label="Sessions"
             value={stats.totalSessions}
@@ -205,7 +205,7 @@ export default function CognitiveConsole({ sessions }) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5 + index * 0.1 }}
-              className={`p-3 rounded-lg border ${
+              className={`p-2.5 md:p-3 rounded-lg border ${
                 insight.type === 'success'
                   ? 'bg-green-400/5 border-green-400/20'
                   : insight.type === 'metric'
@@ -214,10 +214,10 @@ export default function CognitiveConsole({ sessions }) {
               }`}
             >
               <div className="flex items-start gap-2">
-                <span className="text-xs mt-0.5">
+                <span className="text-[10px] md:text-xs mt-0.5 flex-shrink-0">
                   {insight.type === 'success' ? '✓' : insight.type === 'metric' ? '→' : '•'}
                 </span>
-                <span className={`text-xs font-mono flex-1 ${
+                <span className={`text-[10px] md:text-xs font-mono flex-1 leading-relaxed ${
                   insight.type === 'success' ? 'text-green-400' :
                   insight.type === 'metric' ? 'text-cyan-400' :
                   'text-gray-400'
@@ -234,9 +234,9 @@ export default function CognitiveConsole({ sessions }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-4 pt-4 border-t border-gray-800"
+          className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-gray-800"
         >
-          <div className="flex items-center justify-between text-xs font-mono">
+          <div className="flex items-center justify-between text-[10px] md:text-xs font-mono flex-wrap gap-2">
             <span className="text-gray-600">
               System uptime: {new Date().toLocaleDateString()}
             </span>
@@ -254,18 +254,18 @@ function StatCard({ label, value, icon, delay, highlight }) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay, type: 'spring', stiffness: 200 }}
-      className={`p-4 rounded-xl border transition-all ${
+      className={`p-2.5 md:p-4 rounded-lg md:rounded-xl border transition-all touch-manipulation ${
         highlight
           ? 'bg-orange-400/10 border-orange-400/30'
           : 'bg-black/20 border-gray-800'
       }`}
       whileHover={{ scale: 1.05 }}
     >
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-lg">{icon}</span>
-        <span className="text-xs font-mono text-gray-500">{label}</span>
+      <div className="flex items-center gap-1.5 md:gap-2 mb-1">
+        <span className="text-base md:text-lg">{icon}</span>
+        <span className="text-[10px] md:text-xs font-mono text-gray-500">{label}</span>
       </div>
-      <div className={`text-2xl font-mono font-bold ${
+      <div className={`text-lg md:text-2xl font-mono font-bold ${
         highlight ? 'text-orange-400' : 'text-mellowOff'
       }`}>
         {value}
