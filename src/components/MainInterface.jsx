@@ -6,6 +6,7 @@ import CursorTrail from './CursorTrail'
 import TerminalBackground from './TerminalBackground'
 import NeuralNetwork from './NeuralNetwork'
 import ProjectCard from './ProjectCard'
+import NeuralCore from './NeuralCore'
 
 const PROJECTS = [
   {
@@ -124,7 +125,7 @@ export default function MainInterface(){
             </motion.p>
           </header>
 
-        <main className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           <Tile title="About" index={0} mode={mode}>
             <div className="p-4 text-sm leading-relaxed space-y-3">
               <p>I'm Percy Mawela, a 22-year-old computer science student and creative technologist from South Africa. I design and build digital systems where aesthetic precision meets technical clarity — blending code, motion, and storytelling into functional art.</p>
@@ -147,6 +148,10 @@ export default function MainInterface(){
 
           <Tile title="Contact" index={2} mode={mode}>
             <ContactForm mode={mode}/>
+          </Tile>
+
+          <Tile title="Neural Core" index={3} mode={mode}>
+            <NeuralCore mode={mode}/>
           </Tile>
         </main>
 
