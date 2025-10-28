@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import PhotographicRecall from './PhotographicRecall'
-import AutosaveLogs from './AutosaveLogs'
-import StatsPanel from './StatsPanel'
+import FocusTrainer from './FocusTrainer'
+import AutosaveJournal from './AutosaveJournal'
+import CognitiveConsole from './CognitiveConsole'
 
 const STORAGE_KEY = 'mellow_neural_core_sessions'
 
 export default function NeuralCore({ mode }) {
   const [booting, setBooting] = useState(true)
+  const [bootCompleted, setBootCompleted] = useState(() => {
+    // Check if boot has been completed in this session
+    return sessionStorage.getItem('neural_core_boot_completed') === 'true'
+  })
   const [sessions, setSessions] = useState([])
+  const [ambientEnabled, setAmbientEnabled] = useState(false)
 
   // Load sessions from LocalStorage
   useEffect(() => {
@@ -21,13 +26,18 @@ export default function NeuralCore({ mode }) {
       }
     }
 
-    // Boot animation
-    const timer = setTimeout(() => {
+    // Boot animation - only show once per session
+    if (!bootCompleted) {
+      const timer = setTimeout(() => {
+        setBooting(false)
+        setBootCompleted(true)
+        sessionStorage.setItem('neural_core_boot_completed', 'true')
+      }, 2000)
+      return () => clearTimeout(timer)
+    } else {
       setBooting(false)
-    }, 2000)
-
-    return () => clearTimeout(timer)
-  }, [])
+    }
+  }, [bootCompleted])
 
   // Save sessions to LocalStorage
   useEffect(() => {
@@ -95,23 +105,50 @@ export default function NeuralCore({ mode }) {
             transition={{ duration: 0.6 }}
             className="h-full flex flex-col gap-6"
           >
-            {/* Top panels - Recall and Logs */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0">
-              {/* Left: Photographic Recall */}
+            {/* Header with Ambient Sound Toggle */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0"
+            >
+              <div>
+                <h2 className="text-xl sm:text-2xl font-mono font-bold text-mellowOff mb-1">
+                  Neural Core
+                </h2>
+                <p className="text-xs font-mono text-gray-500">
+                  Cognitive sandbox for deep focus and self-reflection
+                </p>
+              </div>
+              <button
+                onClick={() => setAmbientEnabled(!ambientEnabled)}
+                className={`px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl font-mono text-xs font-semibold transition-all whitespace-nowrap ${
+                  ambientEnabled
+                    ? 'bg-cyan-400/20 text-cyan-400 border border-cyan-400/50'
+                    : 'bg-gray-800/50 text-gray-500 border border-gray-700/50 hover:border-gray-600'
+                }`}
+              >
+                {ambientEnabled ? '🔊 Ambient On' : '🔇 Ambient Off'}
+              </button>
+            </motion.div>
+
+            {/* Top panels - Focus Trainer and Journal */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 flex-1 min-h-0">
+              {/* Left: Photographic Recall 2.0 */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-                className="relative p-6 rounded-2xl overflow-hidden"
+                className="relative p-4 md:p-6 rounded-xl md:rounded-2xl overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'linear-gradient(135deg, rgba(34,211,238,0.05), rgba(16,185,129,0.02))',
+                  border: '1px solid rgba(34,211,238,0.15)',
                 }}
               >
                 <motion.div
                   className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-20"
                   style={{
-                    background: 'radial-gradient(circle, #5C4B8A, transparent)'
+                    background: 'radial-gradient(circle, #22d3ee, transparent)'
                   }}
                   animate={{
                     scale: [1, 1.2, 1],
@@ -124,25 +161,28 @@ export default function NeuralCore({ mode }) {
                   }}
                 />
                 <div className="relative z-10 h-full">
-                  <PhotographicRecall onSessionComplete={addSession} />
+                  <FocusTrainer 
+                    onSessionComplete={addSession}
+                    ambientEnabled={ambientEnabled}
+                  />
                 </div>
               </motion.div>
 
-              {/* Right: Autosave Logs */}
+              {/* Right: Enhanced Autosave Journal */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="relative p-6 rounded-2xl overflow-hidden"
+                className="relative p-4 md:p-6 rounded-xl md:rounded-2xl overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'linear-gradient(135deg, rgba(168,85,247,0.05), rgba(34,211,238,0.02))',
+                  border: '1px solid rgba(168,85,247,0.15)',
                 }}
               >
                 <motion.div
                   className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-20"
                   style={{
-                    background: 'radial-gradient(circle, #00B894, transparent)'
+                    background: 'radial-gradient(circle, #a855f7, transparent)'
                   }}
                   animate={{
                     scale: [1, 1.2, 1],
@@ -156,18 +196,21 @@ export default function NeuralCore({ mode }) {
                   }}
                 />
                 <div className="relative z-10 h-full">
-                  <AutosaveLogs sessions={sessions} onAddSession={addSession} />
+                  <AutosaveJournal 
+                    sessions={sessions} 
+                    onAddSession={addSession} 
+                  />
                 </div>
               </motion.div>
             </div>
 
-            {/* Bottom: Stats Panel */}
+            {/* Bottom: Cognitive Feedback Console */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              <StatsPanel sessions={sessions} />
+              <CognitiveConsole sessions={sessions} />
             </motion.div>
           </motion.div>
         )}

@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Tile from './Tile'
 import ModeToggle from './ModeToggle'
+import ModeSelector from './ModeSelector'
 import CursorTrail from './CursorTrail'
 import TerminalBackground from './TerminalBackground'
 import NeuralNetwork from './NeuralNetwork'
 import ProjectCard from './ProjectCard'
 import NeuralCore from './NeuralCore'
+import FloatBreather from './FloatBreather'
+import BootSequence from './BootSequence'
 
 const PROJECTS = [
   {
@@ -29,16 +32,91 @@ const PROJECTS = [
 
 export default function MainInterface(){
   const [mode, setMode] = useState(() => localStorage.getItem('mellow_mode') || 'flow')
+  const [showBoot, setShowBoot] = useState(false)
+  const [bootMode, setBootMode] = useState(mode)
+  const [selectorOpen, setSelectorOpen] = useState(false)
 
   useEffect(()=>{
     localStorage.setItem('mellow_mode', mode)
   },[mode])
 
+  // Handle mode selection from selector
+  const handleModeSelect = (newMode) => {
+    setSelectorOpen(false)
+    if (newMode !== mode) {
+      setBootMode(newMode)
+      setShowBoot(true)
+    }
+  }
+
+  const handleBootComplete = () => {
+    setShowBoot(false)
+    setMode(bootMode)
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden" data-mode={mode}>
+      {/* Mode-specific boot sequence overlay */}
+      <AnimatePresence>
+        {showBoot && (
+          <BootSequence key="boot" mode={bootMode} onFinish={handleBootComplete} />
+        )}
+      </AnimatePresence>
+
+      {/* Mode Selector */}
+      <ModeSelector 
+        currentMode={mode}
+        onSelectMode={handleModeSelect}
+        isOpen={selectorOpen}
+        onClose={() => setSelectorOpen(false)}
+      />
+
+      {/* Background animations */}
       <AnimatePresence mode="wait">
         {mode === 'flow' ? (
           <NeuralNetwork key="neural" mode={mode} />
+        ) : mode === 'freeze' ? (
+          <motion.div 
+            key="freeze-bg"
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-mellowBlack via-mellowBlack to-mellowPurple/20" />
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  'radial-gradient(circle at 20% 30%, rgba(92,75,138,0.15), transparent)',
+                  'radial-gradient(circle at 80% 70%, rgba(0,184,148,0.15), transparent)',
+                  'radial-gradient(circle at 50% 50%, rgba(92,75,138,0.15), transparent)',
+                ]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            />
+          </motion.div>
+        ) : mode === 'float' ? (
+          <motion.div 
+            key="float-bg"
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-mellowBlack via-mellowBlack to-cyan-400/10" />
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  'radial-gradient(circle at 30% 20%, rgba(34,211,238,0.1), transparent)',
+                  'radial-gradient(circle at 70% 80%, rgba(96,165,250,0.1), transparent)',
+                  'radial-gradient(circle at 30% 20%, rgba(34,211,238,0.1), transparent)',
+                ]
+              }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+            />
+          </motion.div>
         ) : (
           <TerminalBackground key="terminal" mode={mode} />
         )}
@@ -50,6 +128,8 @@ export default function MainInterface(){
           animate={{
             background: mode === 'flow' 
               ? 'radial-gradient(circle at 20% 30%, rgba(92,75,138,0.15), rgba(0,0,0,0)), radial-gradient(circle at 80% 70%, rgba(0,184,148,0.12), rgba(0,0,0,0))'
+              : mode === 'freeze'
+              ? 'radial-gradient(circle at 50% 50%, rgba(92,75,138,0.1), rgba(0,0,0,0.98)), radial-gradient(circle at 30% 70%, rgba(0,184,148,0.08), rgba(0,0,0,0.98))'
               : 'radial-gradient(circle at 30% 40%, rgba(20,20,20,0.8), rgba(0,0,0,0.95)), radial-gradient(circle at 70% 60%, rgba(40,40,40,0.6), rgba(0,0,0,0.95))'
           }}
           transition={{duration:1.2}}
@@ -101,14 +181,92 @@ export default function MainInterface(){
               Neural network of skills & expertise
             </motion.p>
           </motion.div>
-          <ModeToggle mode={mode} setMode={setMode} />
+          <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
+        </div>
+      ) : mode === 'freeze' ? (
+        // Freeze mode - Neural Core full page
+        <div className="max-w-[1600px] mx-auto py-6 md:py-8 px-4 md:px-8 relative z-10 h-screen flex flex-col">
+          <motion.header 
+            className="mb-4 md:mb-6"
+            initial={{opacity:0, y:-20}}
+            animate={{opacity:1, y:0}}
+            transition={{duration:0.8, ease: [0.22, 1, 0.36, 1]}}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-mellowOff">
+                  Neural Core
+                </h1>
+                <p className="mt-1 md:mt-2 text-xs sm:text-sm text-gray-400 font-mono">
+                  Memory training & cognitive journaling system
+                </p>
+              </div>
+              <motion.div
+                className="text-mellowGreen text-[10px] sm:text-xs font-mono"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                ❄ FREEZE
+              </motion.div>
+            </div>
+          </motion.header>
+
+          <motion.div 
+            className="flex-1 overflow-hidden"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:0.3, duration:0.8}}
+          >
+            <NeuralCore mode={mode}/>
+          </motion.div>
+
+          <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
+        </div>
+      ) : mode === 'float' ? (
+        // Float mode - Breathing interface full page
+        <div className="max-w-[1600px] mx-auto py-6 md:py-8 px-4 md:px-8 relative z-10 h-screen flex flex-col">
+          <motion.header 
+            className="mb-4 md:mb-6"
+            initial={{opacity:0, y:-20}}
+            animate={{opacity:1, y:0}}
+            transition={{duration:0.8, ease: [0.22, 1, 0.36, 1]}}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-mellowOff">
+                  Float Mode
+                </h1>
+                <p className="mt-1 md:mt-2 text-xs sm:text-sm text-gray-400 font-mono">
+                  Guided breathing for focus, calm, and creativity
+                </p>
+              </div>
+              <motion.div
+                className="text-cyan-400 text-[10px] sm:text-xs font-mono"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                🌬 FLOAT
+              </motion.div>
+            </div>
+          </motion.header>
+
+          <motion.div 
+            className="flex-1 overflow-hidden"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:0.3, duration:0.8}}
+          >
+            <FloatBreather />
+          </motion.div>
+
+          <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
         </div>
       ) : (
         // Focus mode - Full interface with cards
-        <div className="max-w-7xl mx-auto py-16 px-4 md:px-8 relative z-10">
-          <header className="mb-16 max-w-4xl">
+        <div className="max-w-7xl mx-auto py-12 md:py-16 px-4 md:px-8 relative z-10">
+          <header className="mb-12 md:mb-16 max-w-4xl">
             <motion.h1 
-              className="text-6xl md:text-8xl font-heading font-bold tracking-tight"
+              className="text-5xl sm:text-6xl md:text-8xl font-heading font-bold tracking-tight"
               initial={{opacity:0, y:-30}}
               animate={{opacity:1, y:0}}
               transition={{duration:1, ease: [0.22, 1, 0.36, 1]}}
@@ -116,7 +274,7 @@ export default function MainInterface(){
               Mellow OS
             </motion.h1>
             <motion.p 
-              className="mt-4 text-base text-gray-400 font-mono tracking-wide"
+              className="mt-3 md:mt-4 text-sm md:text-base text-gray-400 font-mono tracking-wide"
               initial={{opacity:0}}
               animate={{opacity:1}}
               transition={{delay:0.4, duration:0.8}}
@@ -125,7 +283,7 @@ export default function MainInterface(){
             </motion.p>
           </header>
 
-        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
           <Tile title="About" index={0} mode={mode}>
             <div className="p-4 text-sm leading-relaxed space-y-3">
               <p>I'm Percy Mawela, a 22-year-old computer science student and creative technologist from South Africa. I design and build digital systems where aesthetic precision meets technical clarity — blending code, motion, and storytelling into functional art.</p>
@@ -149,13 +307,9 @@ export default function MainInterface(){
           <Tile title="Contact" index={2} mode={mode}>
             <ContactForm mode={mode}/>
           </Tile>
-
-          <Tile title="Neural Core" index={3} mode={mode}>
-            <NeuralCore mode={mode}/>
-          </Tile>
         </main>
 
-        <ModeToggle mode={mode} setMode={setMode} />
+        <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
       </div>
       )}
     </div>
