@@ -185,7 +185,7 @@ export default function MainInterface(){
           </motion.div>
           <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
         </div>
-      ) : mode === 'freeze' ? (
+  ) : mode === 'freeze' ? (
         // Freeze mode - Neural Core full page
         <div className="max-w-[1600px] mx-auto py-6 md:py-8 px-4 md:px-8 relative z-10 h-screen flex flex-col">
           <motion.header 
@@ -214,7 +214,7 @@ export default function MainInterface(){
           </motion.header>
 
           <motion.div 
-            className="flex-1 overflow-hidden"
+            className="flex-1 overflow-auto"
             initial={{opacity:0}}
             animate={{opacity:1}}
             transition={{delay:0.3, duration:0.8}}
@@ -263,7 +263,7 @@ export default function MainInterface(){
 
           <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
         </div>
-      ) : mode === 'fix' ? (
+  ) : mode === 'fix' ? (
         // Fix mode - custom scripts & automations
         <div className="max-w-[1600px] mx-auto py-6 md:py-8 px-4 md:px-8 relative z-10 h-screen flex flex-col">
           <motion.header 
@@ -292,7 +292,7 @@ export default function MainInterface(){
           </motion.header>
 
           <motion.div 
-            className="flex-1 overflow-hidden"
+            className="flex-1 overflow-auto p-4"
             initial={{opacity:0}}
             animate={{opacity:1}}
             transition={{delay:0.3, duration:0.8}}
@@ -305,6 +305,29 @@ export default function MainInterface(){
       ) : (
         // Focus mode - Full interface with cards
         <div className="max-w-7xl mx-auto py-12 md:py-16 px-4 md:px-8 relative z-10">
+          {/* App icons landing */}
+          <div className="mb-8 grid grid-cols-3 sm:grid-cols-5 gap-4 justify-center items-center">
+            <button onClick={() => handleModeSelect('flow')} aria-label="Open Flow mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
+              <div className="text-2xl">☯</div>
+              <div className="text-xs font-mono">Flow</div>
+            </button>
+            <button onClick={() => handleModeSelect('focus')} aria-label="Open Focus mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
+              <div className="text-2xl">◈</div>
+              <div className="text-xs font-mono">Focus</div>
+            </button>
+            <button onClick={() => handleModeSelect('freeze')} aria-label="Open Freeze mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
+              <div className="text-2xl">❄</div>
+              <div className="text-xs font-mono">Freeze</div>
+            </button>
+            <button onClick={() => handleModeSelect('float')} aria-label="Open Float mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
+              <div className="text-2xl">🌬</div>
+              <div className="text-xs font-mono">Float</div>
+            </button>
+            <button onClick={() => handleModeSelect('fix')} aria-label="Open Fix mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
+              <div className="text-2xl">🛠</div>
+              <div className="text-xs font-mono">Fix</div>
+            </button>
+          </div>
           <header className="mb-12 md:mb-16 max-w-4xl">
             <motion.h1 
               className="text-5xl sm:text-6xl md:text-8xl font-heading font-bold tracking-tight"

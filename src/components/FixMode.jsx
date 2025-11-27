@@ -8,7 +8,11 @@ export default function FixMode(){
   const [code, setCode] = useState('// write a script here\nconsole.log("hello from Fix mode")')
   const [name, setName] = useState('Untitled')
   const [output, setOutput] = useState('')
+  const [logs, setLogs] = useState([])
+  const [isRunning, setIsRunning] = useState(false)
   const textareaRef = useRef(null)
+  const workerRef = useRef(null)
+  const runTimeoutRef = useRef(null)
 
   useEffect(()=>{
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -30,15 +34,84 @@ export default function FixMode(){
 
   const runScript = () => {
     setOutput('running...')
-    // Run in a simple sandbox using Function
-    try{
-      const fn = new Function('console', code)
-      const logs = []
-      fn({ log: (...args)=> logs.push(args.map(a=>String(a)).join(' ')) })
-      setOutput(logs.length ? logs.join('\n') : 'Script executed (no output)')
-    }catch(e){
+
+    // terminate previous worker if running
+    if (workerRef.current) {
+      try { workerRef.current.terminate() } catch (e) { /* ignore */ }
+      workerRef.current = null
+    }
+
+  setIsRunning(true)
+  // create a new worker instance
+    try {
+      const worker = new Worker(new URL('../workers/fixRunner.worker.js', import.meta.url), { type: 'module' })
+      workerRef.current = worker
+
+  const logs = []
+      const clearRun = () => {
+        if (runTimeoutRef.current) {
+          clearTimeout(runTimeoutRef.current)
+          runTimeoutRef.current = null
+        }
+        if (workerRef.current) {
+          try { workerRef.current.terminate() } catch (e) {}
+          workerRef.current = null
+        }
+      }
+
+      worker.onmessage = (ev) => {
+        const { type, payload, error } = ev.data || {}
+        if (type === 'log') {
+          logs.push(payload)
+          setLogs([...logs])
+          setOutput(logs.join('\n'))
+        }
+        if (type === 'error') {
+          clearRun()
+          setOutput('Error: ' + error)
+        }
+        if (type === 'done') {
+          clearRun()
+          setIsRunning(false)
+          if (logs.length === 0) setOutput('Script executed (no output)')
+        }
+      }
+
+      worker.onerror = (err) => {
+        clearRun()
+        setIsRunning(false)
+        setOutput('Error: ' + (err?.message || 'Worker error'))
+      }
+
+      // post the run request
+      worker.postMessage({ type: 'run', code })
+
+      // enforce a timeout to avoid infinite loops
+      runTimeoutRef.current = setTimeout(() => {
+        if (workerRef.current) {
+          try { workerRef.current.terminate() } catch (e) {}
+          workerRef.current = null
+        }
+        setIsRunning(false)
+        setOutput('Error: script timed out')
+      }, 6000)
+    } catch (e) {
+      setIsRunning(false)
       setOutput('Error: ' + e.message)
     }
+  }
+
+  const stopRun = () => {
+    if (workerRef.current) {
+      try { workerRef.current.terminate() } catch (e) {}
+      workerRef.current = null
+    }
+    if (runTimeoutRef.current) {
+      clearTimeout(runTimeoutRef.current)
+      runTimeoutRef.current = null
+    }
+    setIsRunning(false)
+    setOutput((prev) => prev + '\n[stopped]')
   }
 
   const loadScript = (s) => {
@@ -51,6 +124,20 @@ export default function FixMode(){
   const deleteScript = (id) => {
     setScripts(prev => prev.filter(s => s.id !== id))
   }
+
+  // cleanup worker on unmount
+  useEffect(() => {
+    return () => {
+      if (workerRef.current) {
+        try { workerRef.current.terminate() } catch (e) {}
+        workerRef.current = null
+      }
+      if (runTimeoutRef.current) {
+        clearTimeout(runTimeoutRef.current)
+        runTimeoutRef.current = null
+      }
+    }
+  }, [])
 
   return (
     <div className="h-full flex flex-col gap-3">
@@ -78,13 +165,31 @@ export default function FixMode(){
           />
 
           <div className="flex gap-2 mt-3">
-            <motion.button onClick={runScript} className="px-3 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-mellowBlack font-bold text-sm touch-manipulation" whileTap={{scale:0.98}}>Run</motion.button>
+            <motion.button onClick={runScript} className="px-3 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-mellowBlack font-bold text-sm touch-manipulation flex items-center gap-2" whileTap={{scale:0.98}} disabled={isRunning}>
+              {isRunning ? (
+                <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/></svg>
+              ) : null}
+              <span>{isRunning ? 'Running' : 'Run'}</span>
+            </motion.button>
+            <motion.button onClick={stopRun} className="px-3 py-2 rounded-lg bg-red-600 text-white text-sm touch-manipulation" whileTap={{scale:0.98}} disabled={!isRunning}>Stop</motion.button>
             <motion.button onClick={saveScript} className="px-3 py-2 rounded-lg bg-gray-800/40 border border-gray-700 text-gray-300 text-sm touch-manipulation" whileTap={{scale:0.98}}>Save</motion.button>
             <motion.button onClick={()=>{setCode('') ; setName('')}} className="px-3 py-2 rounded-lg bg-transparent border border-gray-700 text-gray-400 text-sm" whileTap={{scale:0.98}}>Clear</motion.button>
+            <motion.button onClick={()=>{ setLogs([]); setOutput('') }} className="px-3 py-2 rounded-lg bg-transparent border border-gray-700 text-gray-400 text-sm" whileTap={{scale:0.98}}>Clear Logs</motion.button>
           </div>
 
-          <div className="mt-3 text-sm font-mono text-gray-300">Output:</div>
-          <div className="mt-1 p-3 bg-black/30 rounded-lg min-h-[80px] text-xs font-mono text-gray-200 overflow-auto">{output}</div>
+          <div className="mt-3 text-sm font-mono text-gray-300 flex items-center justify-between">
+            <div>Output:</div>
+            <div className="text-xs text-gray-400">{logs.length} log{logs.length !== 1 ? 's' : ''}</div>
+          </div>
+          <div className="mt-1 p-3 bg-black/30 rounded-lg min-h-[80px] text-xs font-mono text-gray-200 overflow-auto">
+            {logs.length === 0 ? (
+              <div className="text-gray-500">{output || 'No output yet'}</div>
+            ) : (
+              logs.map((l, i) => (
+                <div key={i} className="py-1 border-b border-white/5">{l}</div>
+              ))
+            )}
+          </div>
         </div>
 
         <aside className="w-64 md:w-72 flex-shrink-0">

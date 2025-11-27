@@ -1,8 +1,60 @@
 import React, { useEffect, useRef } from 'react'
+import FocusTrap from 'focus-trap-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ProjectModal({ project, isOpen, onClose }) {
   if (!project) return null
+
+  const modalRef = useRef(null)
+  const lastActiveRef = useRef(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      // store last focused element so we can restore focus on close
+      lastActiveRef.current = document.activeElement
+
+      // focus the close button when modal opens
+      const btn = modalRef.current?.querySelector('button[aria-label="Close project preview"]')
+      if (btn) btn.focus()
+
+      const handleKey = (e) => {
+        if (e.key === 'Escape') {
+          e.stopPropagation()
+          onClose()
+        }
+
+        if (e.key === 'Tab') {
+          // simple focus trap
+          const focusable = modalRef.current?.querySelectorAll(
+            'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+          )
+          if (!focusable || focusable.length === 0) return
+          const first = focusable[0]
+          const last = focusable[focusable.length - 1]
+
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault()
+              last.focus()
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault()
+              first.focus()
+            }
+          }
+        }
+      }
+
+      document.addEventListener('keydown', handleKey, true)
+      return () => document.removeEventListener('keydown', handleKey, true)
+    } else {
+      // restore focus to the previously focused element
+      if (lastActiveRef.current && typeof lastActiveRef.current.focus === 'function') {
+        lastActiveRef.current.focus()
+      }
+    }
+  }, [isOpen, onClose])
 
   return (
     <AnimatePresence>
@@ -27,20 +79,17 @@ export default function ProjectModal({ project, isOpen, onClose }) {
             aria-hidden={!isOpen}
           >
             <div 
-              ref={modalRef => {
-                // ensure focus when modal opens
-                if(modalRef && isOpen){
-                  const btn = modalRef.querySelector('button[aria-label="Close project preview"]')
-                  if(btn) btn.focus()
-                }
-              }}
+              ref={modalRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby="project-modal-title"
               className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-mellowBlack border border-white/10 rounded-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close button */}
+              {/* focus trap wrapper */}
+              <FocusTrap active={isOpen} focusTrapOptions={{ clickOutsideDeactivates: true }}>
+                <>
+                  {/* Close button */}
               <button
                 onClick={onClose}
                 aria-label="Close project preview"
@@ -142,6 +191,8 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                   )}
                 </motion.div>
               </div>
+                </>
+              </FocusTrap>
             </div>
           </motion.div>
         </>
