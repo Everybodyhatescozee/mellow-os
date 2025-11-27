@@ -308,11 +308,11 @@ export default function MainInterface(){
           {/* App icons landing */}
           <div className="mb-8 grid grid-cols-3 sm:grid-cols-5 gap-6 justify-center items-center">
             {[
-              { id: 'flow', icon: '☯', label: 'Flow' },
-              { id: 'focus', icon: '◈', label: 'Focus' },
-              { id: 'freeze', icon: '❄', label: 'Freeze' },
-              { id: 'float', icon: '🌬', label: 'Float' },
-              { id: 'fix', icon: '🛠', label: 'Fix' },
+              { id: 'flow', svg: (<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" strokeWidth="1.5"/><path d="M7 12a5 5 0 0010 0" stroke="#06B6D4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>), label: 'Flow' },
+              { id: 'focus', svg: (<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#F472B6" strokeWidth="1.5"/><path d="M8 12h8" stroke="#FDE68A" strokeWidth="1.5" strokeLinecap="round"/></svg>), label: 'Focus' },
+              { id: 'freeze', svg: (<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v18" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round"/><path d="M3 12h18" stroke="#06B6D4" strokeWidth="1.5" strokeLinecap="round"/></svg>), label: 'Freeze' },
+              { id: 'float', svg: (<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 15c2-2 5-3 8-3s6 1 8 3" stroke="#06B6D4" strokeWidth="1.5" strokeLinecap="round"/><path d="M6 10c1-1 3-2 6-2s5 1 6 2" stroke="#60A5FA" strokeWidth="1.2" strokeLinecap="round"/></svg>), label: 'Float' },
+              { id: 'fix', svg: (<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20l8-8" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 4l-8 8" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>), label: 'Fix' },
             ].map(m => (
               <button
                 key={m.id}
@@ -320,10 +320,12 @@ export default function MainInterface(){
                 aria-label={`Open ${m.label} mode`}
                 className="flex flex-col items-center gap-2 touch-manipulation"
               >
-                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/3 to-white/5 border border-white/10 flex items-center justify-center text-3xl shadow-lg transition-transform transform hover:scale-105">
-                  {m.icon}
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/3 to-white/5 border border-white/10 flex items-center justify-center text-2xl md:text-3xl shadow-lg transition-transform transform hover:scale-105">
+                  <div className="w-10 h-10 md:w-12 md:h-12" aria-hidden>
+                    {m.svg}
+                  </div>
                 </div>
-                <div className="text-xs font-mono mt-1">{m.label}</div>
+                <div className="text-[11px] md:text-xs font-mono mt-1">{m.label}</div>
               </button>
             ))}
           </div>
