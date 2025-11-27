@@ -11,6 +11,7 @@ import NeuralCore from './NeuralCore'
 import FloatBreather from './FloatBreather'
 import BootSequence from './BootSequence'
 import FixMode from './FixMode'
+import ErrorBoundary from './ErrorBoundary'
 import MellowPortfolio from './MellowPortfolio'
 
 const PROJECTS = [
@@ -59,8 +60,8 @@ export default function MainInterface(){
   return (
     <div className="min-h-screen relative overflow-hidden" data-mode={mode}>
       {/* Dev debug overlay to help diagnose mode/rendering issues (visible on localhost) */}
-      {typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost' && (
-        <div className="fixed top-4 left-4 z-60 p-2 bg-white/90 text-black rounded text-xs font-mono">
+      {typeof window !== 'undefined' && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.search.includes('debug')) && (
+        <div style={{ position: 'fixed', top: 12, left: 12, zIndex: 9999 }} className="p-2 bg-white/95 text-black rounded text-xs font-mono">
           <div>mode: {mode}</div>
           <div>showBoot: {String(showBoot)}</div>
           <div>bootMode: {bootMode}</div>
@@ -310,7 +311,9 @@ export default function MainInterface(){
             animate={{opacity:1}}
             transition={{delay:0.3, duration:0.8}}
           >
-            <FixMode />
+            <ErrorBoundary>
+              <FixMode />
+            </ErrorBoundary>
           </motion.div>
 
           <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
