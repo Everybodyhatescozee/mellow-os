@@ -73,7 +73,23 @@ export default function BootSequence({ mode, onFinish }) {
           ]
         }
       default:
-        return getBootConfig().flow
+        // Fallback to Flow config explicitly to avoid accidental recursion
+        return {
+          title: 'FLOW MODE',
+          subtitle: 'Neural Network Interface',
+          icon: '☯',
+          color: 'text-mellowGreen',
+          bgGradient: 'from-mellowPurple/20 to-mellowGreen/20',
+          glow: '0 0 60px rgba(0,184,148,0.6)',
+          lines: [
+            { text: '$ mellow-os --init flow', delay: 0.3 },
+            { text: '> mapping neural pathways...', delay: 0.6 },
+            { text: '> activating creative cortex...', delay: 0.9 },
+            { text: '> synchronizing inspiration nodes...', delay: 1.2 },
+            { text: '> establishing flow state...', delay: 1.5 },
+            { text: '✓ Flow mode initialized — consciousness streaming', delay: 1.8, success: true }
+          ]
+        }
     }
   }
 
