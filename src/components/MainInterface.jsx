@@ -306,27 +306,26 @@ export default function MainInterface(){
         // Focus mode - Full interface with cards
         <div className="max-w-7xl mx-auto py-12 md:py-16 px-4 md:px-8 relative z-10">
           {/* App icons landing */}
-          <div className="mb-8 grid grid-cols-3 sm:grid-cols-5 gap-4 justify-center items-center">
-            <button onClick={() => handleModeSelect('flow')} aria-label="Open Flow mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
-              <div className="text-2xl">☯</div>
-              <div className="text-xs font-mono">Flow</div>
-            </button>
-            <button onClick={() => handleModeSelect('focus')} aria-label="Open Focus mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
-              <div className="text-2xl">◈</div>
-              <div className="text-xs font-mono">Focus</div>
-            </button>
-            <button onClick={() => handleModeSelect('freeze')} aria-label="Open Freeze mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
-              <div className="text-2xl">❄</div>
-              <div className="text-xs font-mono">Freeze</div>
-            </button>
-            <button onClick={() => handleModeSelect('float')} aria-label="Open Float mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
-              <div className="text-2xl">🌬</div>
-              <div className="text-xs font-mono">Float</div>
-            </button>
-            <button onClick={() => handleModeSelect('fix')} aria-label="Open Fix mode" className="panel-glass p-4 rounded-lg flex flex-col items-center gap-2 touch-manipulation">
-              <div className="text-2xl">🛠</div>
-              <div className="text-xs font-mono">Fix</div>
-            </button>
+          <div className="mb-8 grid grid-cols-3 sm:grid-cols-5 gap-6 justify-center items-center">
+            {[
+              { id: 'flow', icon: '☯', label: 'Flow' },
+              { id: 'focus', icon: '◈', label: 'Focus' },
+              { id: 'freeze', icon: '❄', label: 'Freeze' },
+              { id: 'float', icon: '🌬', label: 'Float' },
+              { id: 'fix', icon: '🛠', label: 'Fix' },
+            ].map(m => (
+              <button
+                key={m.id}
+                onClick={() => handleModeSelect(m.id)}
+                aria-label={`Open ${m.label} mode`}
+                className="flex flex-col items-center gap-2 touch-manipulation"
+              >
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/3 to-white/5 border border-white/10 flex items-center justify-center text-3xl shadow-lg transition-transform transform hover:scale-105">
+                  {m.icon}
+                </div>
+                <div className="text-xs font-mono mt-1">{m.label}</div>
+              </button>
+            ))}
           </div>
           <header className="mb-12 md:mb-16 max-w-4xl">
             <motion.h1 
