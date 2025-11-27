@@ -10,6 +10,8 @@ import ProjectCard from './ProjectCard'
 import NeuralCore from './NeuralCore'
 import FloatBreather from './FloatBreather'
 import BootSequence from './BootSequence'
+import FixMode from './FixMode'
+import MellowPortfolio from './MellowPortfolio'
 
 const PROJECTS = [
   {
@@ -261,6 +263,45 @@ export default function MainInterface(){
 
           <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
         </div>
+      ) : mode === 'fix' ? (
+        // Fix mode - custom scripts & automations
+        <div className="max-w-[1600px] mx-auto py-6 md:py-8 px-4 md:px-8 relative z-10 h-screen flex flex-col">
+          <motion.header 
+            className="mb-4 md:mb-6"
+            initial={{opacity:0, y:-20}}
+            animate={{opacity:1, y:0}}
+            transition={{duration:0.8, ease: [0.22, 1, 0.36, 1]}}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-mellowOff">
+                  Fix Mode
+                </h1>
+                <p className="mt-1 md:mt-2 text-xs sm:text-sm text-gray-400 font-mono">
+                  Custom scripts & automations
+                </p>
+              </div>
+              <motion.div
+                className="text-yellow-400 text-[10px] sm:text-xs font-mono"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                🛠 FIX
+              </motion.div>
+            </div>
+          </motion.header>
+
+          <motion.div 
+            className="flex-1 overflow-hidden"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:0.3, duration:0.8}}
+          >
+            <FixMode />
+          </motion.div>
+
+          <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
+        </div>
       ) : (
         // Focus mode - Full interface with cards
         <div className="max-w-7xl mx-auto py-12 md:py-16 px-4 md:px-8 relative z-10">
@@ -297,10 +338,8 @@ export default function MainInterface(){
           </Tile>
 
           <Tile title="Projects" index={1} mode={mode}>
-            <div className="p-4 space-y-3">
-              {PROJECTS.map((project, i) => (
-                <ProjectCard key={i} project={project} mode={mode}/>
-              ))}
+            <div className="p-4">
+              <MellowPortfolio projects={PROJECTS} />
             </div>
           </Tile>
 

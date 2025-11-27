@@ -40,6 +40,15 @@ export default function ModeToggle({mode, onOpenSelector}){
           gradient: ['linear-gradient(90deg, transparent, rgba(34,211,238,0.4), transparent)', 
                     'linear-gradient(180deg, transparent, rgba(96,165,250,0.4), transparent)']
         }
+      case 'fix':
+        return {
+          background: 'linear-gradient(135deg, rgba(250,204,21,0.12), rgba(245,158,11,0.06))',
+          border: '1px solid rgba(245,158,11,0.25)',
+          color: 'text-yellow-400',
+          icon: '🛠',
+          gradient: ['linear-gradient(90deg, transparent, rgba(245,158,11,0.22), transparent)', 
+                    'linear-gradient(180deg, transparent, rgba(250,204,21,0.18), transparent)']
+        }
     }
   }
 

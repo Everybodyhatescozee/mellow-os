@@ -43,6 +43,17 @@ export default function ModeSelector({ currentMode, onSelectMode, isOpen, onClos
       borderColor: 'border-cyan-400/30',
       hoverBg: 'hover:bg-cyan-400/20'
     }
+    ,
+    {
+      id: 'fix',
+      name: 'FIX',
+      icon: '🛠',
+      description: 'Custom scripts & automations (Fix mode)',
+      color: 'text-yellow-400',
+      bgColor: 'bg-yellow-400/10',
+      borderColor: 'border-yellow-400/30',
+      hoverBg: 'hover:bg-yellow-400/20'
+    }
   ]
 
   return (
@@ -143,6 +154,8 @@ export default function ModeSelector({ currentMode, onSelectMode, isOpen, onClos
                           ? '0 0 30px rgba(92,75,138,0.3)'
                           : mode.id === 'float'
                           ? '0 0 30px rgba(34,211,238,0.3)'
+                          : mode.id === 'fix'
+                          ? '0 0 30px rgba(245,158,11,0.28)'
                           : '0 0 30px rgba(100,100,100,0.2)'
                       }}
                     />
