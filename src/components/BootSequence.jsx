@@ -72,6 +72,23 @@ export default function BootSequence({ mode, onFinish }) {
             { text: '✓ Float mode ready — breathe and flow', delay: 1.8, success: true }
           ]
         }
+      case 'fix':
+        return {
+          title: 'FIX MODE',
+          subtitle: 'Custom scripts & automations',
+          icon: '🛠',
+          color: 'text-yellow-400',
+          bgGradient: 'from-yellow-400/20 to-mellowBlack/20',
+          glow: '0 0 50px rgba(245,158,11,0.5)',
+          lines: [
+            { text: '$ mellow-os --init fix', delay: 0.3 },
+            { text: '> loading automation registry...', delay: 0.6 },
+            { text: '> mounting script editor...', delay: 0.9 },
+            { text: '> syncing local automations...', delay: 1.2 },
+            { text: '> preparing execution sandbox (display-only)...', delay: 1.5 },
+            { text: '✓ Fix mode ready — manage your automations', delay: 1.8, success: true }
+          ]
+        }
       default:
         // Fallback to Flow config explicitly to avoid accidental recursion
         return {
