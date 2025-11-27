@@ -305,28 +305,7 @@ export default function MainInterface(){
       ) : (
         // Focus mode - Full interface with cards
         <div className="max-w-7xl mx-auto py-12 md:py-16 px-4 md:px-8 relative z-10">
-          {/* App icons landing */}
-          <div className="mb-8 grid grid-cols-3 sm:grid-cols-5 gap-6 justify-center items-center">
-            {[
-              { id: 'flow', src: '/src/assets/icons/flow.svg', label: 'Flow' },
-              { id: 'focus', src: '/src/assets/icons/focus.svg', label: 'Focus' },
-              { id: 'freeze', src: '/src/assets/icons/freeze.svg', label: 'Freeze' },
-              { id: 'float', src: '/src/assets/icons/float.svg', label: 'Float' },
-              { id: 'fix', src: '/src/assets/icons/fix.svg', label: 'Fix' },
-            ].map(m => (
-              <button
-                key={m.id}
-                onClick={() => handleModeSelect(m.id)}
-                aria-label={`Open ${m.label} mode`}
-                className="flex flex-col items-center gap-2 touch-manipulation"
-              >
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/3 to-white/5 border border-white/10 flex items-center justify-center text-2xl md:text-3xl shadow-lg transition-transform transform hover:scale-105">
-                  <img src={m.src} alt="" className="w-10 h-10 md:w-12 md:h-12" aria-hidden />
-                </div>
-                <div className="text-[11px] md:text-xs font-mono mt-1">{m.label}</div>
-              </button>
-            ))}
-          </div>
+          {/* Landing area (icons removed) */}
           <header className="mb-12 md:mb-16 max-w-4xl">
             <motion.h1 
               className="text-5xl sm:text-6xl md:text-8xl font-heading font-bold tracking-tight"
