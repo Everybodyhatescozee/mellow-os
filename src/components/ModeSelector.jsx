@@ -102,6 +102,7 @@ export default function ModeSelector({ currentMode, onSelectMode, isOpen, onClos
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 + index * 0.1 }}
                     onClick={() => onSelectMode(mode.id)}
+                    aria-label={`Select ${mode.name} mode`}
                     className={`relative p-4 md:p-5 lg:p-6 rounded-xl md:rounded-2xl border ${mode.borderColor} ${mode.bgColor} ${mode.hoverBg} transition-all group ${
                       currentMode === mode.id ? 'ring-2 ring-offset-2 ring-offset-mellowBlack' : ''
                     }`}

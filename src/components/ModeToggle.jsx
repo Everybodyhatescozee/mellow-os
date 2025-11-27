@@ -63,6 +63,8 @@ export default function ModeToggle({mode, onOpenSelector}){
     >
       <motion.button 
         onClick={onOpenSelector} 
+        aria-label={`Open mode selector. Current mode ${mode}`}
+        title={`Open mode selector (current: ${mode})`}
         className="relative px-4 md:px-6 py-2.5 md:py-3 rounded-full font-mono text-[10px] sm:text-xs tracking-wider overflow-hidden"
         style={{
           background: styles.background,

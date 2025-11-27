@@ -44,6 +44,7 @@ export default function ProjectCard({ project, mode, onOpen }){
       <motion.button
         type="button"
         onClick={() => onOpen(project)}
+        aria-label={`Preview ${project.title}`}
         whileHover={{ y: -8, scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         className="relative p-5 rounded-xl cursor-pointer overflow-hidden group block text-left"
