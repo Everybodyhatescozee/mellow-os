@@ -344,15 +344,7 @@ export default function MainInterface(){
             </div>
           </Tile>
 
-          <Tile title="Fix Mode" index={3} mode={mode}>
-            <div className="p-4 space-y-3">
-              <p className="text-sm text-gray-300">Open Fix mode to create, view, import, and export your local automations and scripts.</p>
-              <div className="flex gap-2">
-                <button onClick={()=> handleModeSelect('fix')} className="px-3 py-2 rounded-lg bg-yellow-500 text-black font-bold text-sm">Open Fix Mode</button>
-                <button onClick={()=> setSelectorOpen(true)} className="px-3 py-2 rounded-lg bg-transparent border border-white/10 text-sm">Choose Mode</button>
-              </div>
-            </div>
-          </Tile>
+          {/* Fix Mode card removed from landing grid per user request */}
 
           <Tile title="Contact" index={2} mode={mode}>
             <ContactForm mode={mode}/>
