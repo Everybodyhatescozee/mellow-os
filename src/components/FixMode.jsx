@@ -29,6 +29,7 @@ export default function FixMode(){
   const [code, setCode] = useState('// write a script here')
   const [name, setName] = useState('Untitled')
   const [description, setDescription] = useState('')
+  const [editingId, setEditingId] = useState(null)
   const textareaRef = useRef(null)
   const fileInputRef = useRef(null)
 
@@ -52,12 +53,17 @@ export default function FixMode(){
 
   const saveScript = () => {
     if(!name.trim()) return
-    const s = { id: Date.now(), name: name.trim(), description: description.trim(), code }
-    // if editing existing (same id in description?), we always prepend new
-    setScripts(prev => [s, ...prev])
+    const s = { id: editingId || Date.now(), name: name.trim(), description: description.trim(), code }
+    if (editingId) {
+      // update existing
+      setScripts(prev => prev.map(item => item.id === editingId ? s : item))
+    } else {
+      setScripts(prev => [s, ...prev])
+    }
     setName('Untitled')
     setDescription('')
     setCode('// write a script here')
+    setEditingId(null)
   }
 
   // Export all scripts as a JSON file
@@ -107,6 +113,7 @@ export default function FixMode(){
     setCode(s.code)
     setName(s.name)
     setDescription(s.description || '')
+    setEditingId(s.id)
     setTimeout(()=> textareaRef.current?.focus(), 50)
   }
 
@@ -170,8 +177,27 @@ export default function FixMode(){
           <div className="grid grid-cols-2 gap-3 auto-rows-fr overflow-y-auto max-h-[60vh] pr-2">
             {scripts.length === 0 ? (
               <div className="text-xs text-gray-600 col-span-2">No automations yet. Save your first script.</div>
-            ) : scripts.map(s=> (
-              <div key={s.id} className="relative p-3 rounded-lg shadow-md" style={{background: 'linear-gradient(135deg, #fff5b1, #ffd27a)'}}>
+            ) : scripts.map((s, idx)=> (
+              <div
+                key={s.id}
+                draggable
+                onDragStart={(e)=> e.dataTransfer.setData('text/plain', String(idx))}
+                onDragOver={(e)=> e.preventDefault()}
+                onDrop={(e)=>{
+                  e.preventDefault()
+                  const from = Number(e.dataTransfer.getData('text/plain'))
+                  const to = idx
+                  if (Number.isNaN(from)) return
+                  setScripts(prev => {
+                    const copy = [...prev]
+                    const [moved] = copy.splice(from,1)
+                    copy.splice(to,0,moved)
+                    return copy
+                  })
+                }}
+                className="relative p-3 rounded-lg shadow-md cursor-grab"
+                style={{background: 'linear-gradient(135deg, #fff5b1, #ffd27a)'}}
+              >
                 <div className="font-semibold text-sm mb-1">{s.name}</div>
                 <div className="text-[11px] text-gray-700 mb-2 line-clamp-3">{s.description || s.code.split('\n')[0]}</div>
                 <div className="absolute top-2 right-2 flex flex-col gap-1">
