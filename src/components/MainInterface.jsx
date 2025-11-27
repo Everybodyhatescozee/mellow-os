@@ -58,6 +58,14 @@ export default function MainInterface(){
 
   return (
     <div className="min-h-screen relative overflow-hidden" data-mode={mode}>
+      {/* Dev debug overlay to help diagnose mode/rendering issues (visible on localhost) */}
+      {typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost' && (
+        <div className="fixed top-4 left-4 z-60 p-2 bg-white/90 text-black rounded text-xs font-mono">
+          <div>mode: {mode}</div>
+          <div>showBoot: {String(showBoot)}</div>
+          <div>bootMode: {bootMode}</div>
+        </div>
+      )}
       {/* Mode-specific boot sequence overlay */}
       <AnimatePresence>
         {showBoot && (
@@ -344,7 +352,7 @@ export default function MainInterface(){
             </div>
           </Tile>
 
-          {/* Fix Mode card removed from landing grid per user request */}
+          {/*  */}
 
           <Tile title="Contact" index={2} mode={mode}>
             <ContactForm mode={mode}/>
