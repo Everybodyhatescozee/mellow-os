@@ -126,18 +126,12 @@ export default function FixMode(){
 
       <div className="flex gap-3 h-full min-h-0">
         <div className="flex-1 flex flex-col min-h-0">
-          <div className="mb-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="mb-2">
             <input
               value={name}
               onChange={(e)=>setName(e.target.value)}
               placeholder="Script name"
-              className="px-3 py-2 rounded-lg bg-black/40 border border-gray-800 text-mellowOff text-sm font-mono focus:outline-none"
-            />
-            <input
-              value={description}
-              onChange={(e)=>setDescription(e.target.value)}
-              placeholder="Short description"
-              className="px-3 py-2 rounded-lg bg-black/40 border border-gray-800 text-mellowOff text-sm font-mono focus:outline-none"
+              className="w-full px-3 py-2 rounded-lg bg-black/40 border border-gray-800 text-mellowOff text-sm font-mono focus:outline-none"
             />
           </div>
 
@@ -154,6 +148,15 @@ export default function FixMode(){
             <motion.button onClick={exportScripts} className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm" whileTap={{scale:0.98}}>Export</motion.button>
             <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e)=>handleFile(e.target.files?.[0])} />
             <motion.button onClick={handleImportClick} className="px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm" whileTap={{scale:0.98}}>Import</motion.button>
+          </div>
+
+          <div className="mt-3">
+            <input
+              value={description}
+              onChange={(e)=>setDescription(e.target.value)}
+              placeholder="Short description"
+              className="w-full px-3 py-2 rounded-lg bg-black/40 border border-gray-800 text-mellowOff text-sm font-mono focus:outline-none"
+            />
           </div>
 
           <div className="mt-3 text-sm font-mono text-gray-300">Preview:</div>
