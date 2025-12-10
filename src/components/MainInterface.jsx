@@ -29,7 +29,7 @@ const PROJECTS = [
     description: "Faith-driven motion design studio website with animated brand identity",
     tech: ["Next.js", "React", "TypeScript", "Framer Motion", "Tailwind CSS v4", "shadcn/ui"],
     github: "https://github.com/Everybodyhatescozee/shepherd-studios",
-    live: "https://shepherd-studios-tau.vercel.app"
+    live: "https://shepherd-studios.vercel.app"
   }
 ]
 
