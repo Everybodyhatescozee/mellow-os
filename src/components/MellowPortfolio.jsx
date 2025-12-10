@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import ProjectCard from './ProjectCard'
-import ProjectModal from './ProjectModal'
 
 export default function MellowPortfolio({ projects = [] }){
-  const [selected, setSelected] = useState(null)
-
-  const open = (project) => setSelected(project)
-  const close = () => setSelected(null)
-
   const featured = projects[0]
 
   return (
@@ -33,12 +27,9 @@ export default function MellowPortfolio({ projects = [] }){
             <div className="md:flex-1">
               <h3 className="text-xl md:text-2xl font-heading font-bold mb-2">Featured — {featured.title}</h3>
               <p className="text-sm text-gray-300 mb-4 leading-relaxed">{featured.description}</p>
-              <div className="flex gap-2 flex-wrap">
-                <button onClick={() => open(featured)} className="px-4 py-2 rounded-lg bg-mellowGreen text-mellowBlack font-bold text-sm whitespace-nowrap">Preview</button>
-                {featured.live && (
-                  <a href={featured.live} target="_blank" rel="noreferrer" className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm whitespace-nowrap hover:bg-white/10 transition-colors">Open</a>
-                )}
-              </div>
+              {featured.live && (
+                <a href={featured.live} target="_blank" rel="noreferrer" className="inline-block px-4 py-2 rounded-lg bg-mellowGreen text-mellowBlack font-bold text-sm hover:bg-mellowGreen/80 transition-colors">Open</a>
+              )}
             </div>
             {featured.image && (
               <div className="mt-4 md:mt-0 md:flex-shrink-0 md:w-56 h-40 md:h-48 rounded-lg overflow-hidden flex-shrink-0">
@@ -51,11 +42,9 @@ export default function MellowPortfolio({ projects = [] }){
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((p, i) => (
-          <ProjectCard key={i} project={p} onOpen={open} />
+          <ProjectCard key={i} project={p} />
         ))}
       </div>
-
-      <ProjectModal project={selected} isOpen={!!selected} onClose={close} />
     </section>
   )
 }

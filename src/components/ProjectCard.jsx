@@ -1,25 +1,41 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-export default function ProjectCard({ project, mode, onOpen }){
+export default function ProjectCard({ project }){
   const content = (
     <>
       <div className="absolute inset-0 bg-gradient-to-br from-mellowPurple/20 via-transparent to-mellowGreen/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      <div className="relative z-10">
-        <h4 className="font-heading text-base font-semibold mb-2 tracking-wide">{project.title}</h4>
-        <p className="text-xs text-gray-400 leading-relaxed mb-3">{project.description}</p>
-        
-        {/* Tech Stack */}
-        <div className="flex flex-wrap gap-1.5">
-          {project.tech?.map((tech, i) => (
-            <span 
-              key={i}
-              className="text-[10px] px-2 py-1 rounded-full bg-mellowPurple/20 text-mellowGreen border border-mellowPurple/30"
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex-1">
+          <h4 className="font-heading text-base font-semibold mb-2 tracking-wide">{project.title}</h4>
+          <p className="text-xs text-gray-400 leading-relaxed mb-3">{project.description}</p>
+          
+          {/* Tech Stack */}
+          <div className="flex flex-wrap gap-1.5">
+            {project.tech?.map((tech, i) => (
+              <span 
+                key={i}
+                className="text-[10px] px-2 py-1 rounded-full bg-mellowPurple/20 text-mellowGreen border border-mellowPurple/30"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-4 pt-4 border-t border-white/10">
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-3 py-2 rounded-lg bg-mellowGreen text-mellowBlack font-bold text-sm hover:bg-mellowGreen/80 transition-colors"
             >
-              {tech}
-            </span>
-          ))}
+              Open
+            </a>
+          )}
         </div>
       </div>
 
@@ -38,42 +54,12 @@ export default function ProjectCard({ project, mode, onOpen }){
     </>
   )
 
-  // If an onOpen handler is provided, render as a button that opens a modal/preview.
-  if (onOpen) {
-    return (
-      <motion.button
-        type="button"
-        onClick={() => onOpen(project)}
-        aria-label={`Preview ${project.title}`}
-        whileHover={{ y: -8, scale: 1.03 }}
-        whileTap={{ scale: 0.98 }}
-        className="relative p-5 rounded-xl cursor-pointer overflow-hidden group block text-left"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))',
-          border: '1px solid rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(10px)',
-          transformStyle: 'preserve-3d',
-          perspective: '1000px'
-        }}
-      >
-        {content}
-      </motion.button>
-    )
-  }
-
-  // Default behavior: link to live site
+  // Render as a card div (not clickable, button is inside)
   return (
-    <motion.a 
-      href={project.live}
-      target="_blank"
-      rel="noopener noreferrer"
-      whileHover={{
-        y:-8, 
-        scale:1.03,
-        rotateX: 2,
-        rotateY: -2
-      }} 
-      className="relative p-5 rounded-xl cursor-pointer overflow-hidden group block"
+    <motion.div
+      whileHover={{ y: -8, scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
+      className="relative p-5 rounded-xl overflow-hidden group block"
       style={{
         background: 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))',
         border: '1px solid rgba(255,255,255,0.08)',
@@ -84,6 +70,6 @@ export default function ProjectCard({ project, mode, onOpen }){
       transition={{type: 'spring', stiffness: 300, damping: 20}}
     >
       {content}
-    </motion.a>
+    </motion.div>
   )
 }
