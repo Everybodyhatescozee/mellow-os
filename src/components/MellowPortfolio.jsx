@@ -29,19 +29,19 @@ export default function MellowPortfolio({ projects = [] }){
       {/* Featured */}
       {featured && (
         <div className="relative rounded-xl overflow-hidden p-4 md:p-6 panel-glass border">
-          <div className="md:flex md:items-center md:justify-between">
-            <div className="md:flex-1 md:pr-6">
+          <div className="md:flex md:items-start md:gap-8">
+            <div className="md:flex-1">
               <h3 className="text-xl md:text-2xl font-heading font-bold mb-2">Featured — {featured.title}</h3>
-              <p className="text-sm text-gray-300 mb-3">{featured.description}</p>
-              <div className="flex gap-2">
-                <button onClick={() => open(featured)} className="px-3 py-2 rounded-lg bg-mellowGreen text-mellowBlack font-bold text-sm">Preview</button>
+              <p className="text-sm text-gray-300 mb-4 leading-relaxed">{featured.description}</p>
+              <div className="flex gap-2 flex-wrap">
+                <button onClick={() => open(featured)} className="px-4 py-2 rounded-lg bg-mellowGreen text-mellowBlack font-bold text-sm whitespace-nowrap">Preview</button>
                 {featured.live && (
-                  <a href={featured.live} target="_blank" rel="noreferrer" className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm">Open</a>
+                  <a href={featured.live} target="_blank" rel="noreferrer" className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm whitespace-nowrap hover:bg-white/10 transition-colors">Open</a>
                 )}
               </div>
             </div>
             {featured.image && (
-              <div className="hidden md:block md:w-48 md:h-32 rounded-lg overflow-hidden">
+              <div className="mt-4 md:mt-0 md:flex-shrink-0 md:w-56 h-40 md:h-48 rounded-lg overflow-hidden flex-shrink-0">
                 <img src={featured.image} alt={featured.title} className="w-full h-full object-cover" />
               </div>
             )}
@@ -49,7 +49,7 @@ export default function MellowPortfolio({ projects = [] }){
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((p, i) => (
           <ProjectCard key={i} project={p} onOpen={open} />
         ))}
