@@ -59,19 +59,7 @@ export default function MainInterface(){
 
   return (
     <div className="min-h-screen relative overflow-hidden" data-mode={mode}>
-      {/* Dev debug overlay to help diagnose mode/rendering issues (visible on localhost) */}
-      {typeof window !== 'undefined' && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.search.includes('debug')) && (
-        <div style={{ position: 'fixed', top: 12, left: 12, zIndex: 9999 }} className="p-2 bg-white/95 text-black rounded text-xs font-mono">
-          <div>mode: {mode}</div>
-          <div>showBoot: {String(showBoot)}</div>
-          <div>bootMode: {bootMode}</div>
-          <div className="mt-1 flex gap-1">
-            <button onClick={() => { setShowBoot(false); setMode('fix') }} className="px-2 py-1 bg-green-500 text-white rounded text-[11px]">Go Fix</button>
-            <button onClick={() => setShowBoot(true)} className="px-2 py-1 bg-yellow-500 text-black rounded text-[11px]">Start Boot</button>
-            <button onClick={() => setShowBoot(false)} className="px-2 py-1 bg-gray-700 text-white rounded text-[11px]">Hide Boot</button>
-          </div>
-        </div>
-      )}
+      {/* debug overlay removed */}
       {/* Mode-specific boot sequence overlay */}
       <AnimatePresence>
         {showBoot && (

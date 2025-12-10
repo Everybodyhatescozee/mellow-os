@@ -124,12 +124,7 @@ export default function FixMode(){
   return (
     <div className="h-full flex flex-col gap-3">
       {/* Localhost-visible banner to confirm FixMode is mounted and to show scripts count */}
-      {typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost' && (
-        <div className="fixed top-4 right-4 z-50 px-3 py-2 bg-red-600 text-white rounded font-mono text-sm">
-          <div>FixMode mounted</div>
-          <div>scripts: {scripts.length}</div>
-        </div>
-      )}
+      {/* debug banner removed */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl md:text-2xl font-heading font-bold">🛠 Fix Mode</h2>
