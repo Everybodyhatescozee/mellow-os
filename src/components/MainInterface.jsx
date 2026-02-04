@@ -370,7 +370,7 @@ export default function MainInterface(){
               animate={{opacity:1}}
               transition={{delay:0.2}}
             >
-              Cybersecurity Specialist & Systems Engineer
+              Cybersecurity Analyst · Systems Thinker
             </motion.p>
             <motion.p 
               className="text-base md:text-lg text-gray-400 max-w-3xl leading-relaxed"
@@ -378,8 +378,9 @@ export default function MainInterface(){
               animate={{opacity:1}}
               transition={{delay:0.4}}
             >
-              Building secure digital infrastructure where defensive architecture meets operational precision. 
-              Specializing in threat detection, incident response, and security-first development.
+              I work at the intersection of cybersecurity, systems thinking, and thoughtful software design.
+              My focus is on understanding threats, patterns, and workflows — from SOC monitoring and incident response fundamentals to building tools that prioritize clarity over noise.
+              I’m interested in how security systems actually operate in practice, and how they can be designed to support better decisions under pressure.
             </motion.p>
           </motion.div>
 
@@ -395,9 +396,10 @@ export default function MainInterface(){
               whileHover={{ scale: 1.02, borderColor: 'rgba(239,68,68,0.3)' }}
             >
               <div className="text-3xl mb-3">🛡️</div>
-              <h3 className="text-lg font-bold text-mellowOff mb-2">Security Operations</h3>
+              <h3 className="text-lg font-bold text-mellowOff mb-2">Security Operations (SOC Foundations)</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                SIEM platforms, IDS/IPS systems, threat intelligence, incident response & forensics
+                Monitoring and analyzing security events using SIEM concepts, alert triage, and incident response workflows.
+                Focused on understanding attacker behavior, reducing noise, and escalating incidents with context.
               </p>
             </motion.div>
 
@@ -408,7 +410,8 @@ export default function MainInterface(){
               <div className="text-3xl mb-3">🐍</div>
               <h3 className="text-lg font-bold text-mellowOff mb-2">Security Automation</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Python scripting, security orchestration, automated threat detection & response workflows
+                Writing Python scripts to automate repetitive security tasks, enrich alerts, and support SOC workflows.
+                Exploring how small automations can improve response speed and analyst focus.
               </p>
             </motion.div>
 
@@ -419,7 +422,8 @@ export default function MainInterface(){
               <div className="text-3xl mb-3">⚡</div>
               <h3 className="text-lg font-bold text-mellowOff mb-2">Secure Development</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                React, Next.js, TypeScript — building defensively designed, production-ready applications
+                Building web applications with security in mind using React, Next.js, and TypeScript.
+                Emphasizing input validation, safe defaults, and defensive thinking during development.
               </p>
             </motion.div>
           </motion.div>
