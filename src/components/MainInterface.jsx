@@ -6,32 +6,12 @@ import ModeSelector from './ModeSelector'
 import CursorTrail from './CursorTrail'
 import TerminalBackground from './TerminalBackground'
 import NeuralNetwork from './NeuralNetwork'
-import ProjectCard from './ProjectCard'
 import NeuralCore from './NeuralCore'
 import FloatBreather from './FloatBreather'
 import BootSequence from './BootSequence'
 import FixMode from './FixMode'
 import ErrorBoundary from './ErrorBoundary'
-import MellowPortfolio from './MellowPortfolio'
-
-const PROJECTS = [
-  {
-    title: "Marauders' Memory Map",
-    description: "Interactive memory mapping application with real-time data synchronization",
-    fullDescription: "A modern full-stack memory mapping application showcasing advanced React and Next.js capabilities. Built with Next.js 16, React 19, and Supabase for real-time data management. Features include an intuitive interface for creating and organizing memories, dark mode support, responsive design optimized for all devices, and type-safe TypeScript implementation. Leverages cutting-edge technologies including Turbopack for performance optimization and shadcn/ui for a polished component library. The project demonstrates expertise in modern web development, real-time database management, and creating seamless user experiences.",
-    tech: ["Next.js 16", "React 19", "TypeScript", "Supabase", "Tailwind CSS v4", "shadcn/ui", "Vercel"],
-    github: "https://github.com/Everybodyhatescozee/Naheedv2",
-    live: "https://naheedmap.vercel.app",
-    image: "/marauders-memory-map.png"
-  },
-  {
-    title: "Shepherd Studios",
-    description: "Faith-driven motion design studio website with animated brand identity",
-    tech: ["Next.js", "React", "TypeScript", "Framer Motion", "Tailwind CSS v4", "shadcn/ui"],
-    github: "https://github.com/Everybodyhatescozee/shepherd-studios",
-    live: "https://shepherd-studios.vercel.app"
-  }
-]
+import SOCDashboard from './SOCDashboard'
 
 export default function MainInterface(){
   const [mode, setMode] = useState(() => localStorage.getItem('mellow_mode') || 'flow')
@@ -59,7 +39,6 @@ export default function MainInterface(){
 
   return (
     <div className="min-h-screen relative overflow-hidden" data-mode={mode}>
-      {/* debug overlay removed */}
       {/* Mode-specific boot sequence overlay */}
       <AnimatePresence>
         {showBoot && (
@@ -121,6 +100,27 @@ export default function MainInterface(){
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
             />
           </motion.div>
+        ) : mode === 'soc' ? (
+          <motion.div 
+            key="soc-bg"
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-mellowBlack via-mellowBlack to-red-900/20" />
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  'radial-gradient(circle at 20% 30%, rgba(248,113,113,0.15), transparent)',
+                  'radial-gradient(circle at 80% 70%, rgba(239,68,68,0.15), transparent)',
+                  'radial-gradient(circle at 50% 50%, rgba(248,113,113,0.15), transparent)',
+                ]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            />
+          </motion.div>
         ) : (
           <TerminalBackground key="terminal" mode={mode} />
         )}
@@ -174,7 +174,7 @@ export default function MainInterface(){
               animate={{opacity: [0, 1, 1, 0]}}
               transition={{duration: 4, times: [0, 0.2, 0.7, 1]}}
             >
-              Percy Mawela — 22 — creative technologist & designer
+              Percy Mawela — 23 — cybersecurity specialist
             </motion.p>
             <motion.p
               className="mt-6 text-sm text-mellowGreen/80 font-mono"
@@ -182,7 +182,7 @@ export default function MainInterface(){
               animate={{opacity: [0, 1, 1, 0]}}
               transition={{duration: 4, times: [0, 0.3, 0.7, 1]}}
             >
-              Neural network of skills & expertise
+              Neural network of security & systems expertise
             </motion.p>
           </motion.div>
           <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
@@ -306,54 +306,212 @@ export default function MainInterface(){
 
           <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
         </div>
+      ) : mode === 'soc' ? (
+        // SOC mode - Security Operations Center
+        <div className="max-w-[1600px] mx-auto py-6 md:py-8 px-4 md:px-8 relative z-10 h-screen flex flex-col">
+          <motion.header 
+            className="mb-4 md:mb-6"
+            initial={{opacity:0, y:-20}}
+            animate={{opacity:1, y:0}}
+            transition={{duration:0.8, ease: [0.22, 1, 0.36, 1]}}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-mellowOff">
+                  Security Operations Center
+                </h1>
+                <p className="mt-1 md:mt-2 text-xs sm:text-sm text-gray-400 font-mono">
+                  Real-time threat monitoring & incident response
+                </p>
+              </div>
+              <motion.div
+                className="text-red-400 text-[10px] sm:text-xs font-mono"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                🛡 SOC
+              </motion.div>
+            </div>
+          </motion.header>
+
+          <motion.div 
+            className="flex-1 overflow-auto"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:0.3, duration:0.8}}
+          >
+            <ErrorBoundary>
+              <SOCDashboard />
+            </ErrorBoundary>
+          </motion.div>
+
+          <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
+        </div>
       ) : (
-        // Focus mode - Full interface with cards
+        // Focus mode - Portfolio landing page
         <div className="max-w-7xl mx-auto py-12 md:py-16 px-4 md:px-8 relative z-10">
-          {/* Landing area (icons removed) */}
-          <header className="mb-12 md:mb-16 max-w-4xl">
+          <motion.div
+            initial={{opacity:0, y:20}}
+            animate={{opacity:1, y:0}}
+            transition={{duration:0.8, ease: [0.22, 1, 0.36, 1]}}
+            className="mb-16 md:mb-24"
+          >
             <motion.h1 
-              className="text-5xl sm:text-6xl md:text-8xl font-heading font-bold tracking-tight"
-              initial={{opacity:0, y:-30}}
-              animate={{opacity:1, y:0}}
-              transition={{duration:1, ease: [0.22, 1, 0.36, 1]}}
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-heading font-bold tracking-tight mb-6"
+              style={{
+                textShadow: '0 0 60px rgba(92,75,138,0.6), 0 0 120px rgba(0,184,148,0.3)'
+              }}
             >
-              Mellow OS
+              Percy Mawela
             </motion.h1>
             <motion.p 
-              className="mt-3 md:mt-4 text-sm md:text-base text-gray-400 font-mono tracking-wide"
+              className="text-xl md:text-2xl text-mellowGreen font-mono mb-4"
               initial={{opacity:0}}
               animate={{opacity:1}}
-              transition={{delay:0.4, duration:0.8}}
+              transition={{delay:0.2}}
             >
-              Percy Mawela — 22 — creative technologist & designer
+              Cybersecurity Specialist & Systems Engineer
             </motion.p>
-          </header>
+            <motion.p 
+              className="text-base md:text-lg text-gray-400 max-w-3xl leading-relaxed"
+              initial={{opacity:0}}
+              animate={{opacity:1}}
+              transition={{delay:0.4}}
+            >
+              Building secure digital infrastructure where defensive architecture meets operational precision. 
+              Specializing in threat detection, incident response, and security-first development.
+            </motion.p>
+          </motion.div>
 
-        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
-          <Tile title="About" index={0} mode={mode}>
-            <div className="p-4 text-sm leading-relaxed space-y-3">
-              <p>I'm Percy Mawela, a 22-year-old computer science student and creative technologist from South Africa. I design and build digital systems where aesthetic precision meets technical clarity — blending code, motion, and storytelling into functional art.</p>
-              
-              <p>My current focus lies in cybersecurity, Python development, and frontend engineering — mastering how systems interact, secure themselves, and express intelligence through design. I'm driven by the balance between creativity and control: how code can protect, perform, and communicate all at once.</p>
-              
-              <p>Technically, I work with React, Next.js, TailwindCSS, Framer Motion, Supabase, Firebase, MySQL, Python, and Vercel — tools that help me turn concepts into interactive realities. My curiosity extends beyond aesthetics; it's about building digital experiences that feel human yet engineered for precision.</p>
-              
-              <p>At its core, Mellow OS isn't just a portfolio — it's a system of self-evolution. A reflection of how I think, learn, and build: technical, calm, and alive.</p>
+          {/* Skills Grid */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:0.6}}
+          >
+            <motion.div 
+              className="p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm"
+              whileHover={{ scale: 1.02, borderColor: 'rgba(239,68,68,0.3)' }}
+            >
+              <div className="text-3xl mb-3">🛡️</div>
+              <h3 className="text-lg font-bold text-mellowOff mb-2">Security Operations</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                SIEM platforms, IDS/IPS systems, threat intelligence, incident response & forensics
+              </p>
+            </motion.div>
+
+            <motion.div 
+              className="p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm"
+              whileHover={{ scale: 1.02, borderColor: 'rgba(0,184,148,0.3)' }}
+            >
+              <div className="text-3xl mb-3">🐍</div>
+              <h3 className="text-lg font-bold text-mellowOff mb-2">Security Automation</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Python scripting, security orchestration, automated threat detection & response workflows
+              </p>
+            </motion.div>
+
+            <motion.div 
+              className="p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm"
+              whileHover={{ scale: 1.02, borderColor: 'rgba(92,75,138,0.3)' }}
+            >
+              <div className="text-3xl mb-3">⚡</div>
+              <h3 className="text-lg font-bold text-mellowOff mb-2">Secure Development</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                React, Next.js, TypeScript — building defensively designed, production-ready applications
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* Quick Links */}
+          <motion.div
+            className="flex flex-wrap gap-4 mb-16"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:0.8}}
+          >
+            <a 
+              href="mailto:percyvilyc@gmail.com"
+              className="px-6 py-3 rounded-lg bg-mellowGreen text-mellowBlack font-bold text-sm hover:bg-mellowGreen/80 transition-colors"
+            >
+              Get in Touch
+            </a>
+            <a 
+              href="https://www.linkedin.com/in/percy-mawela-925425271"
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-3 rounded-lg border border-white/20 bg-white/5 text-mellowOff font-bold text-sm hover:bg-white/10 transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a 
+              href="https://github.com/Everybodyhatescozee"
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-3 rounded-lg border border-white/20 bg-white/5 text-mellowOff font-bold text-sm hover:bg-white/10 transition-colors"
+            >
+              GitHub
+            </a>
+          </motion.div>
+
+          {/* Mode Explorer Hint */}
+          <motion.div
+            className="text-center mb-12"
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{delay:1}}
+          >
+            <p className="text-sm text-gray-500 font-mono mb-2">Explore different modes</p>
+            <div className="flex items-center justify-center gap-3 text-xl">
+              <span className="opacity-50">☯</span>
+              <span className="opacity-50">◈</span>
+              <span className="opacity-50">❄</span>
+              <span className="opacity-50">🌬</span>
+              <span className="opacity-50">🛠</span>
+              <span className="opacity-50">🛡</span>
             </div>
-          </Tile>
+          </motion.div>
 
-          <Tile title="Projects" index={1} mode={mode}>
-            <div className="p-4">
-              <MellowPortfolio projects={PROJECTS} />
+          <motion.section
+            className="mt-12 md:mt-16 max-w-4xl"
+            initial={{opacity:0, y:20}}
+            animate={{opacity:1, y:0}}
+            transition={{delay:1.2}}
+          >
+            <h2 className="text-2xl md:text-3xl font-bold text-mellowOff mb-6">About MellowOS</h2>
+            <div className="space-y-4 text-gray-300 leading-relaxed">
+              <p>
+                MellowOS is a personal operating system for thinking clearly in noisy environments.
+              </p>
+              <p>
+                It's a space where systems, security, and creativity meet — built around the idea that good decisions come from calm observation, not urgency. Instead of overwhelming dashboards or performative productivity tools, MellowOS focuses on signal, pattern, and intention.
+              </p>
+              <p>
+                At its core, MellowOS is an experiment in how people actually think:
+              </p>
+              <ul className="space-y-2 ml-4 text-sm">
+                <li className="flex items-start gap-3">
+                  <span className="text-mellowGreen mt-1">→</span>
+                  <span>noticing before reacting</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-mellowGreen mt-1">→</span>
+                  <span>understanding before acting</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-mellowGreen mt-1">→</span>
+                  <span>building quietly, then letting it compound</span>
+                </li>
+              </ul>
+              <p>
+                It blends concepts from cybersecurity, systems design, and cognitive science into a toolset that values clarity over volume and depth over speed.
+              </p>
+              <p className="text-sm text-gray-400 italic">
+                MellowOS is not finished — and it's not trying to be. It's a living system, shaped by use, reflection, and iteration.
+              </p>
             </div>
-          </Tile>
-
-          {/*  */}
-
-          <Tile title="Contact" index={2} mode={mode}>
-            <ContactForm mode={mode}/>
-          </Tile>
-        </main>
+          </motion.section>
 
         <ModeToggle mode={mode} onOpenSelector={() => setSelectorOpen(true)} />
       </div>

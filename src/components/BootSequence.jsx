@@ -89,6 +89,23 @@ export default function BootSequence({ mode, onFinish }) {
             { text: '✓ Fix mode ready — manage your automations', delay: 1.8, success: true }
           ]
         }
+      case 'soc':
+        return {
+          title: 'SOC MODE',
+          subtitle: 'Security Operations Center',
+          icon: '🛡',
+          color: 'text-red-400',
+          bgGradient: 'from-red-500/30 to-orange-500/20',
+          glow: '0 0 60px rgba(248,113,113,0.7)',
+          lines: [
+            { text: '$ mellow-os --init soc', delay: 0.3 },
+            { text: '> initializing threat detection systems...', delay: 0.6 },
+            { text: '> mounting SIEM dashboard...', delay: 0.9 },
+            { text: '> activating real-time monitoring...', delay: 1.2 },
+            { text: '> establishing secure perimeter...', delay: 1.5 },
+            { text: '✓ SOC mode operational — threat monitoring active', delay: 1.8, success: true }
+          ]
+        }
       default:
         // Fallback to Flow config explicitly to avoid accidental recursion
         return {

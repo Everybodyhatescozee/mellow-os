@@ -49,6 +49,24 @@ export default function ModeToggle({mode, onOpenSelector}){
           gradient: ['linear-gradient(90deg, transparent, rgba(245,158,11,0.22), transparent)', 
                     'linear-gradient(180deg, transparent, rgba(250,204,21,0.18), transparent)']
         }
+      case 'soc':
+        return {
+          background: 'linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2))',
+          border: '1px solid rgba(239,68,68,0.5)',
+          color: 'text-red-400',
+          icon: '🛡',
+          gradient: ['linear-gradient(90deg, transparent, rgba(239,68,68,0.4), transparent)', 
+                    'linear-gradient(180deg, transparent, rgba(220,38,38,0.4), transparent)']
+        }
+      default:
+        return {
+          background: 'linear-gradient(135deg, rgba(92,75,138,0.2), rgba(0,184,148,0.1))',
+          border: '1px solid rgba(92,75,138,0.4)',
+          color: 'text-mellowGreen',
+          icon: '☯',
+          gradient: ['linear-gradient(90deg, transparent, rgba(92,75,138,0.3), transparent)', 
+                    'linear-gradient(180deg, transparent, rgba(0,184,148,0.3), transparent)']
+        }
     }
   }
 

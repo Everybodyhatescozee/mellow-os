@@ -42,17 +42,26 @@ export default function ModeSelector({ currentMode, onSelectMode, isOpen, onClos
       bgColor: 'bg-cyan-400/10',
       borderColor: 'border-cyan-400/30',
       hoverBg: 'hover:bg-cyan-400/20'
-    }
-    ,
+    },
     {
       id: 'fix',
       name: 'FIX',
       icon: '🛠',
-      description: 'Custom scripts & automations (Fix mode)',
+      description: 'Custom scripts & automations',
       color: 'text-yellow-400',
       bgColor: 'bg-yellow-400/10',
       borderColor: 'border-yellow-400/30',
       hoverBg: 'hover:bg-yellow-400/20'
+    },
+    {
+      id: 'soc',
+      name: 'SOC',
+      icon: '🛡',
+      description: 'Security Operations Center',
+      color: 'text-red-400',
+      bgColor: 'bg-red-400/10',
+      borderColor: 'border-red-400/30',
+      hoverBg: 'hover:bg-red-400/20'
     }
   ]
 
