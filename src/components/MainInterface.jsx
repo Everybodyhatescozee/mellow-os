@@ -202,7 +202,7 @@ export default function MainInterface(){
                   Neural Core
                 </h1>
                 <p className="mt-1 md:mt-2 text-xs sm:text-sm text-gray-400 font-mono">
-                  Memory training & cognitive journaling system
+                  Minimal interval timer for deep focus
                 </p>
               </div>
               <motion.div

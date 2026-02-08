@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import FocusTrainer from './FocusTrainer'
+import MinimalIntervalTimer from './MinimalIntervalTimer'
 import AutosaveJournal from './AutosaveJournal'
 import CognitiveConsole from './CognitiveConsole'
 
@@ -99,90 +100,13 @@ export default function NeuralCore({ mode }) {
         ) : (
           <motion.div
             key="interface"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="h-full flex flex-col gap-4 md:gap-6"
+            className="h-full w-full"
           >
-            {/* Top panels - Focus Trainer and Journal */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 flex-1 min-h-0">
-              {/* Left: Photographic Recall 2.0 */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="relative p-4 md:p-6 rounded-xl md:rounded-2xl overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(34,211,238,0.05), rgba(16,185,129,0.02))',
-                  border: '1px solid rgba(34,211,238,0.15)',
-                }}
-              >
-                <motion.div
-                  className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-20"
-                  style={{
-                    background: 'radial-gradient(circle, #22d3ee, transparent)'
-                  }}
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.1, 0.2, 0.1]
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: 'easeInOut'
-                  }}
-                />
-                <div className="relative z-10 h-full">
-                  <FocusTrainer 
-                    onSessionComplete={addSession}
-                  />
-                </div>
-              </motion.div>
-
-              {/* Right: Enhanced Autosave Journal */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="relative p-4 md:p-6 rounded-xl md:rounded-2xl overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(168,85,247,0.05), rgba(34,211,238,0.02))',
-                  border: '1px solid rgba(168,85,247,0.15)',
-                }}
-              >
-                <motion.div
-                  className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-20"
-                  style={{
-                    background: 'radial-gradient(circle, #a855f7, transparent)'
-                  }}
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.1, 0.2, 0.1]
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                    delay: 1
-                  }}
-                />
-                <div className="relative z-10 h-full">
-                  <AutosaveJournal 
-                    sessions={sessions} 
-                    onAddSession={addSession} 
-                  />
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Bottom: Cognitive Feedback Console */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <CognitiveConsole sessions={sessions} />
-            </motion.div>
+            {/* Freeze Mode: Full-screen Minimal Interval Timer */}
+            <MinimalIntervalTimer />
           </motion.div>
         )}
       </AnimatePresence>
